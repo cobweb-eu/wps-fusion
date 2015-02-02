@@ -3,6 +3,11 @@
 	xsi:schemaLocation="http://n52.org/wps https://raw.githubusercontent.com/52North/wps-config/52n-wps-config-1.2.1/src/main/xsd/schema_v2.xsd" xmlns="http://n52.org/wps">
 	<Datahandlers>
 		<ParserList>
+		
+			<Parser name="RelationParser" className="de.tudresden.gis.fusion.data.parser.RelationParser" active="true">
+				<Format mimetype="text/turtle" encoding="UTF-8" />
+			</Parser>
+			
 			<Parser name="GML3BasicParser"
 				className="org.n52.wps.io.datahandler.parser.GML3BasicParser"
 				active="true">
@@ -293,6 +298,10 @@
 			</Parser>
 		</ParserList>
 		<GeneratorList>
+		
+			<Generator name="RelationTurtleGenerator" className="de.tudresden.gis.fusion.data.generator.RelationGenerator" active="true">
+				<Format mimetype="text/turtle" encoding="UTF-8" />
+			</Generator>
 			
 			<Generator name="WKTGenerator"
 				className="org.n52.wps.io.datahandler.generator.WKTGenerator"
@@ -599,7 +608,12 @@
 		</GeneratorList>
 	</Datahandlers>
 	<AlgorithmRepositoryList>
-		<Repository name="LocalRAlgorithmRepository"
+	
+		<Repository name="FusionAlgorithmRepository"
+			className="de.tudresden.gis.fusion.FusionAlgorithmRepository" active="true">
+		</Repository>
+		
+		<!-- <Repository name="LocalRAlgorithmRepository"
 			className="org.n52.wps.server.r.LocalRAlgorithmRepository" active="false">
 			<Property name="R_enableBatchStart" active="true">true</Property>
 			<Property name="R_datatypeConfig" active="true">R/R_Datatype.conf</Property>
@@ -861,7 +875,7 @@
 			<Property name="Algorithm" active="true">v.univar</Property>
 			<Property name="Algorithm" active="true">v.vol.rst</Property>
 			<Property name="Algorithm" active="true">v.voronoi</Property>
-		</Repository>
+		</Repository> -->
 		<!-- <Repository name="GeotoolsProcessRepository" className="org.n52.wps.geotools.GeotoolsProcessRepository" 
 			active="false"> </Repository> -->
 		<!-- <Repository name="OracleBPELRepository" className="org.n52.wps.transactional.service.DefaultTransactionalProcessRepository" 
@@ -902,7 +916,7 @@
 			<Property name="BACKEND_URN" active="true">urn:n52:gdal:1.8.0</Property> 
 			<Property name="WORKSPACEBASE" active="true">D:\development\wsBase</Property> 
 			</Repository> -->
-		<Repository name="SextanteRepository"
+		<!-- <Repository name="SextanteRepository"
 			className="org.n52.wps.server.sextante.SextanteProcessRepository"
 			active="false">
 			<Property name="Algorithm" active="true">visibility</Property>
@@ -1132,7 +1146,7 @@
 		</Repository>
 		<Repository name="ServiceLoaderAlgorithmRepository"
 			className="org.n52.wps.server.ServiceLoaderAlgorithmRepository" active="true">
-		</Repository>
+		</Repository> -->
 		<!-- 
 		<Repository name="MCProcessRepository" className="org.n52.wps.mc.MCProcessRepository" active="true">
 			<Property name="CACHED_REMOTE_REPOSITORY" active="true">http://141.30.100.178/gpfeed/gpfeed.xml C:\mypackages\mirror</Property>
@@ -1146,7 +1160,7 @@
 	
 	<Server protocol="http" hostname="localhost" hostport="8080"
 		includeDataInputsInResponse="false" computationTimeoutMilliSeconds="5"
-		cacheCapabilites="false" webappPath="wps" repoReloadInterval="0" maxPoolSize="20" keepAliveSeconds="1000" maxQueuedTasks="100" minPoolSize="10">
+		cacheCapabilites="false" webappPath="wps_conflation" repoReloadInterval="0" maxPoolSize="20" keepAliveSeconds="1000" maxQueuedTasks="100" minPoolSize="10">
 		<!-- Setting to 'true' will enable filtering of responses documents.  Any server URL in
              the response document will be replaced with the server URL used in the HTTP request. --> 
         <Property name="responseURLFilterEnabled" active="true">false</Property>
