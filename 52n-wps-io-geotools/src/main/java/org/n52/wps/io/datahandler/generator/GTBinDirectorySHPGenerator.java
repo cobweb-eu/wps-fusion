@@ -62,6 +62,7 @@ import org.geotools.data.FeatureStore;
 import org.geotools.data.Transaction;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.data.shapefile.ShapefileDataStoreFactory;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.DefaultFeatureCollections;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -100,7 +101,7 @@ public class GTBinDirectorySHPGenerator {
 	private FeatureCollection createCorrectFeatureCollection(
 			FeatureCollection fc) {
 		
-		FeatureCollection resultFeatureCollection = DefaultFeatureCollections.newCollection();
+		DefaultFeatureCollection  resultFeatureCollection = new DefaultFeatureCollection();
 		SimpleFeatureType featureType = null;
 		FeatureIterator iterator = fc.features();
 		String uuid = UUID.randomUUID().toString();
@@ -113,7 +114,7 @@ public class GTBinDirectorySHPGenerator {
 				QName qname = GTHelper.createGML3SchemaForFeatureType(featureType);
 				SchemaRepository.registerSchemaLocation(qname.getNamespaceURI(), qname.getLocalPart());
 			}
-			Feature resultFeature = GTHelper.createFeature("ID"+i, (Geometry)feature.getDefaultGeometry(), featureType, feature.getProperties());
+			SimpleFeature resultFeature = GTHelper.createFeature("ID"+i, (Geometry)feature.getDefaultGeometry(), featureType, feature.getProperties());
 		
 			resultFeatureCollection.add(resultFeature);
 			i++;

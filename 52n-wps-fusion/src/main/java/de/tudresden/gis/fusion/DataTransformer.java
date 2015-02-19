@@ -30,6 +30,9 @@ package de.tudresden.gis.fusion;
 
 import java.util.List;
 
+import org.geotools.coverage.grid.GridCoverage2D;
+import org.geotools.data.simple.SimpleFeatureCollection;
+import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.data.binding.literal.LiteralBooleanBinding;
 import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
@@ -37,10 +40,14 @@ import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralLongBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
+import de.tudresden.gis.fusion.data.ICoverage;
 import de.tudresden.gis.fusion.data.IData;
 import de.tudresden.gis.fusion.data.IFeatureCollection;
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.IFeatureRelationBinding;
+import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
+import de.tudresden.gis.fusion.data.geotools.GTGridCoverage2D;
+import de.tudresden.gis.fusion.data.rdf.IRI;
 import de.tudresden.gis.fusion.data.restrictions.JavaBindingRestriction;
 import de.tudresden.gis.fusion.data.simple.BooleanLiteral;
 import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
@@ -58,16 +65,34 @@ public class DataTransformer {
 	 * @return fusion IData object
 	 */
 	public static IData transformIData(org.n52.wps.io.data.IData data){
+		
+		if(data instanceof LiteralIntBinding)
+			return new IntegerLiteral(((LiteralIntBinding) data).getPayload());
+		if(data instanceof LiteralLongBinding)
+			return new LongLiteral(((LiteralLongBinding) data).getPayload());
+		if(data instanceof LiteralDoubleBinding)
+			return new DecimalLiteral(((LiteralDoubleBinding) data).getPayload());
+		if(data instanceof LiteralBooleanBinding)
+			return new BooleanLiteral(((LiteralBooleanBinding) data).getPayload());
+		if(data instanceof LiteralStringBinding)
+			return new StringLiteral(((LiteralStringBinding) data).getPayload());
+		if(data instanceof GTVectorDataBinding)
+			return new GTFeatureCollection(new IRI(data.toString()), (SimpleFeatureCollection)((GTVectorDataBinding) data).getPayload());
+		if(data instanceof GTRasterDataBinding)
+			return new GTGridCoverage2D(new IRI(data.toString()), (GridCoverage2D)((GTRasterDataBinding) data).getPayload());
+		if(data instanceof IFeatureRelationBinding)
+			return ((IFeatureRelationBinding) data).getPayload();
+		
 		return null;
 	}
 	
 	/**
 	 * transform IData list object from 52n to fusion domain
 	 * @param data 52n IData list object
-	 * @return fusion IData object
+	 * @return fusion IData object (only first item if list object!)
 	 */
-	public static IData transformIData(List<org.n52.wps.io.data.IData> data){
-		return null;
+	public static IData transformIData(List<org.n52.wps.io.data.IData> list){
+		return transformIData(list.get(0));
 	}
 	
 	/**
@@ -76,6 +101,24 @@ public class DataTransformer {
 	 * @return 52n IData object
 	 */
 	public static org.n52.wps.io.data.IData transformIData(IData data){
+		
+		if(data instanceof IntegerLiteral)
+			return new LiteralIntBinding(((IntegerLiteral) data).getValue());
+		if(data instanceof LongLiteral)
+			return new LiteralLongBinding(((LongLiteral) data).getValue());
+		if(data instanceof DecimalLiteral)
+			return new LiteralDoubleBinding(((DecimalLiteral) data).getValue());
+		if(data instanceof BooleanLiteral)
+			return new LiteralBooleanBinding(((BooleanLiteral) data).getValue());
+		if(data instanceof StringLiteral)
+			return new LiteralStringBinding(((StringLiteral) data).getValue());
+		if(data instanceof GTFeatureCollection)
+			return new GTVectorDataBinding(((GTFeatureCollection) data).getSimpleFeatureCollection());
+		if(data instanceof GTGridCoverage2D)
+			return new GTRasterDataBinding(((GTGridCoverage2D) data).getCoverage());
+		if(data instanceof IFeatureRelationCollection)
+			return new IFeatureRelationBinding((IFeatureRelationCollection) data);
+		
 		return null;
 	}
 	
@@ -113,6 +156,8 @@ public class DataTransformer {
 			return LiteralStringBinding.class;
 		if(restriction.compliantWith(IFeatureCollection.class))
 			return GTVectorDataBinding.class;
+		if(restriction.compliantWith(ICoverage.class))
+			return GTRasterDataBinding.class;
 		if(restriction.compliantWith(IFeatureRelationCollection.class))
 			return IFeatureRelationBinding.class;
 		

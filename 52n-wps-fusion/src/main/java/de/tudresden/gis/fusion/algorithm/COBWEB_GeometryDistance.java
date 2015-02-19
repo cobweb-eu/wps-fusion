@@ -61,9 +61,9 @@ import de.tudresden.gis.fusion.data.rdf.IRI;
 import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
 
 @Algorithm(abstrakt="Determines distance relation between input features", version="1.0")
-public class GeometryDistance extends AbstractAnnotatedAlgorithm {
+public class COBWEB_GeometryDistance extends AbstractAnnotatedAlgorithm {
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(GeometryDistance.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(COBWEB_GeometryDistance.class);
 	
 	//input identifier
 	private final String IN_REFERENCE = "IN_REFERENCE";
@@ -86,7 +86,7 @@ public class GeometryDistance extends AbstractAnnotatedAlgorithm {
 	private final String TARGET_NO_RELATION = "no_relation";
 
 	//constructor
-    public GeometryDistance() {
+    public COBWEB_GeometryDistance() {
         super();
     }
 
@@ -129,7 +129,7 @@ public class GeometryDistance extends AbstractAnnotatedAlgorithm {
     	input.put(IN_TARGET, new GTFeatureCollection(new IRI(IN_TARGET), inTarget));
     	input.put(IN_THRESHOLD, new DecimalLiteral(inBuffer));
 		
-		Map<String,IData> output = new de.tudresden.gis.fusion.operation.similarity.geometry.GeometryDistance().execute(input);
+		Map<String,IData> output = new de.tudresden.gis.fusion.operation.relation.similarity.GeometryDistance().execute(input);
 		
 		relations = (IFeatureRelationCollection) output.get("OUT_RELATIONS");
 		outTarget = addRelations(inTarget, relations);

@@ -25,13 +25,19 @@
 	<artifact>
         <groupId>de.tudresden.gis</groupId>
         <artifactId>fusion-base</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>
     <artifact>
         <groupId>de.tudresden.gis</groupId>
         <artifactId>fusion-impl</artifactId>
-        <version>0.0.2-SNAPSHOT</version>
+        <version>0.0.3-SNAPSHOT</version>
+        <license>The Apache Software License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>org.apache.xml</groupId>
+        <artifactId>xml-commons-resolver</artifactId>
+        <version>1.2</version>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>
     
@@ -118,7 +124,7 @@
 	</artifact>
 
 	<!-- http://www.sextantegis.com/ -->
-	<artifact>
+	<!-- <artifact>
 		<groupId>es.unex.sextante</groupId>
 		<artifactId>libMath</artifactId>
 		<version>1.0</version>
@@ -147,7 +153,7 @@
 		<artifactId>sextante_gui</artifactId>
 		<version>1.0</version>
 		<license>GPL 2.0 license</license>
-	</artifact>
+	</artifact> -->
 
 	<!-- https://java3d.java.net/#Licenses -->
 	<artifact>
@@ -195,7 +201,7 @@
 		<artifactId>jsp-api</artifactId>
 		<version>2.1</version>
 		<license>Commons Development and Distribution License, Version 1.0</license>
-		<license>GNU GENERAL PUBLIC LICENSE (GPL Version 2, June 1991)</license>
+		<!-- <license>GNU GENERAL PUBLIC LICENSE (GPL Version 2, June 1991)</license> -->
 	</artifact>
 
 	<!-- https://jstl.java.net/license.html -->
@@ -204,7 +210,7 @@
         <artifactId>jstl</artifactId>
         <version>1.2</version>
         <license>Commons Development and Distribution License, Version 1.0</license>
-		<license>GNU GENERAL PUBLIC LICENSE (GPL Version 2, June 1991)</license>
+		<!-- <license>GNU GENERAL PUBLIC LICENSE (GPL Version 2, June 1991)</license> -->
     </artifact>
 
 
@@ -345,15 +351,15 @@
 	</artifact>
 
 	<!-- 52north.org/maven/repo/releases/org/n52/wps/ -->
-    <artifact>
+   <!--  <artifact>
         <groupId>org.n52.wps</groupId>
         <artifactId>52n-wps-ags-workspace</artifactId>
         <version>10.0.2</version>
 		<license>GNU GENERAL PUBLIC LICENSE (GPL Version 2, June 1991)</license>
-    </artifact>
+    </artifact> -->
 
 	<!-- https://github.com/s-u/Rserve/blob/master/LICENSE -->
-	<artifact>
+	<!-- <artifact>
 		<groupId>org.rosuda</groupId>
 		<artifactId>REngine</artifactId>
 		<version>0.6-8</version>
@@ -364,7 +370,7 @@
 		<artifactId>RserveEngine</artifactId>
 		<version>0.6-8</version>
 		<license>GNU General Public License, version 2</license>
-	</artifact>
+	</artifact> -->
 
 	<!-- http://docs.codehaus.org/display/PICO/License -->
 	<artifact>
