@@ -130,7 +130,7 @@
 					<revisionOnScmFailure>0</revisionOnScmFailure>
 				</configuration>
 			</plugin>
-			<plugin>
+			<!-- <plugin>
 				<groupId>com.mycila</groupId>
 				<artifactId>license-maven-plugin</artifactId>
 				<configuration>
@@ -155,7 +155,7 @@
 						</goals>
 					</execution>
 				</executions>
-			</plugin>
+			</plugin> -->
 			<plugin>
 				<groupId>org.jasig.maven</groupId>
 				<artifactId>maven-notice-plugin</artifactId>
@@ -187,29 +187,30 @@
 		<module>52n-wps-server</module>
 <!-- 		<module>52n-wps-server-soap</module> -->
 		<module>52n-wps-algorithm</module>
-		<module>52n-wps-algorithm-impl</module>
-		<module>52n-wps-algorithm-geotools</module>
+		<!-- <module>52n-wps-algorithm-impl</module>
+		<module>52n-wps-algorithm-geotools</module> -->
 		<module>52n-wps-database</module>
 		<module>52n-wps-webapp</module>
-		<module>52n-wps-client-lib</module>
-		<module>52n-wps-sextante</module>
-		<module>52n-wps-grass</module>
+		<!-- <module>52n-wps-client-lib</module> -->
+		<!-- <module>52n-wps-sextante</module>
+		<module>52n-wps-grass</module> -->
 <!-- 		<module>52n-wps-transactional</module> -->
 		<module>52n-wps-webadmin</module>
-		<module>52n-wps-ags</module>
-		<module>52n-wps-python</module>
-		<module>52n-wps-r</module>
-		<module>52n-wps-mc</module>
+		<!-- <module>52n-wps-ags</module> -->
+		<!-- <module>52n-wps-python</module> -->
+		<!-- <module>52n-wps-r</module> -->
+		<!-- <module>52n-wps-mc</module> -->
 		<module>52n-wps-fusion</module>
 	</modules>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.13</logback.version>
-		<geotools.version>8.7</geotools.version>
+		<!-- <geotools.version>8.7</geotools.version> -->
+		<geotools.version>12.2</geotools.version>
 		<apache.ode.version>1.3.3</apache.ode.version>
 		<apache.axis2.version>1.5.1</apache.axis2.version>
-		<currentYear>2014</currentYear> <!-- manual setting -->
+		<currentYear>2015</currentYear> <!-- manual setting -->
         <maven.build.timestamp.format>yyyy</maven.build.timestamp.format>
         <currentYearDynamic>${maven.build.timestamp}</currentYearDynamic>
 	</properties>
@@ -219,12 +220,12 @@
 			<dependency>
 				<groupId>de.tudresden.gis</groupId>
 				<artifactId>fusion-base</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudresden.gis</groupId>
 				<artifactId>fusion-impl</artifactId>
-				<version>0.0.2-SNAPSHOT</version>
+				<version>0.0.3-SNAPSHOT</version>
 			</dependency>
 			<!-- testing -->
 			<dependency>
@@ -561,7 +562,7 @@
 					</exclusion>
 				</exclusions>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.n52.mc</groupId>
 				<artifactId>mc-schema</artifactId>
 				<version>1.0</version>
@@ -581,7 +582,7 @@
 				<groupId>org.n52.mc</groupId>
 				<artifactId>mc-xml-processors</artifactId>
 				<version>0.6</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>net.sourceforge.pjl-comp-filter</groupId>
 				<artifactId>pjl-comp-filter</artifactId>
@@ -603,11 +604,11 @@
 				<artifactId>52n-wps-io-geotools</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-algorithm-geotools</artifactId>
 				<version>${project.version}</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-commons</artifactId>
@@ -645,32 +646,32 @@
 				<artifactId>52n-wps-algorithm</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-algorithm-impl</artifactId>
 				<version>${project.version}</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-database</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-grid</artifactId>
 				<version>${project.version}</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-webapp</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-client-lib</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
+			</dependency> -->
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-sextante</artifactId>
 				<version>${project.version}</version>
@@ -679,32 +680,32 @@
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-grass</artifactId>
 				<version>${project.version}</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-webadmin</artifactId>
 				<version>${project.version}</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-ags</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
+			</dependency> -->
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-python</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
+			</dependency> -->
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-r</artifactId>
 				<version>${project.version}</version>
-			</dependency>
-			<dependency>
+			</dependency> -->
+			<!-- <dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-mc</artifactId>
 				<version>${project.version}</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>${project.groupId}</groupId>
 				<artifactId>52n-wps-config</artifactId>
@@ -715,11 +716,11 @@
 				<artifactId>ogckml2.2</artifactId>
 				<version>1.0.0</version>
 			</dependency>
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.n52.wps</groupId>
 				<artifactId>52n-wps-ags-workspace</artifactId>
 				<version>10.0.2</version>
-			</dependency>
+			</dependency> -->
 			<dependency>
 				<groupId>org.n52.wps</groupId>
 				<artifactId>52n-xml-wps-v100</artifactId>
@@ -744,7 +745,7 @@
 				<scope>compile</scope>
 			</dependency>
 			<!-- START Sextante dependencies -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>es.unex.sextante</groupId>
 				<artifactId>sextante</artifactId>
 				<version>1.0</version>
@@ -793,7 +794,7 @@
 				<groupId>jep</groupId>
 				<artifactId>jep</artifactId>
 				<version>2.24</version>
-			</dependency>
+			</dependency> -->
 			<!-- END Sexttante dependencies -->
 			<dependency>
 				<groupId>org.apache.ode</groupId>
@@ -806,7 +807,7 @@
 				<version>${apache.ode.version}</version>
 			</dependency>
 			<!-- START R dependencies -->
-			<dependency>
+			<!-- <dependency>
 				<groupId>org.rosuda</groupId>
 				<artifactId>REngine</artifactId>
 				<version>0.6-8</version>
@@ -815,7 +816,7 @@
 				<groupId>org.rosuda</groupId>
 				<artifactId>RserveEngine</artifactId>
 				<version>0.6-8</version>
-			</dependency>
+			</dependency> -->
 			<!-- END R dependencies -->
             <dependency>
                 <groupId>javax.servlet</groupId>

@@ -208,7 +208,7 @@ public class GenericFileDataWithGT {
 		SimpleFeatureType type = null;
 		SimpleFeatureBuilder build = null;
 		FeatureIterator<?> iterator = collection.features();
-		FeatureCollection<SimpleFeatureType, SimpleFeature> modifiedFeatureCollection = null;
+		DefaultFeatureCollection  modifiedFeatureCollection = null;
 		Transaction transaction = new DefaultTransaction("create");
 		FeatureStore<SimpleFeatureType, SimpleFeature> store = null;
 		String uuid = UUID.randomUUID().toString();

@@ -65,6 +65,7 @@ import javax.xml.parsers.SAXParserFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.geotools.feature.DefaultFeatureCollection;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.feature.GeometryAttributeImpl;
@@ -141,7 +142,7 @@ public class GML32BasicParser extends AbstractParser {
 		parser.setStrict(true);
 
 		//parse
-		FeatureCollection fc = resolveFeatureCollection(parser, input);
+		DefaultFeatureCollection fc = resolveFeatureCollection(parser, input);
 
 		GTVectorDataBinding data = new GTVectorDataBinding(fc);
 
@@ -149,12 +150,12 @@ public class GML32BasicParser extends AbstractParser {
 	}
 	
 
-	private FeatureCollection resolveFeatureCollection(Parser parser, InputStream input) {
-		FeatureCollection fc = null;
+	private DefaultFeatureCollection resolveFeatureCollection(Parser parser, InputStream input) {
+		DefaultFeatureCollection fc = null;
 		try {
 			Object parsedData = parser.parse(input);
 			if (parsedData instanceof FeatureCollection){
-				fc = (FeatureCollection) parsedData;
+				fc = (DefaultFeatureCollection) parsedData;
 			} else {
 				List<SimpleFeature> featureList = ((ArrayList<SimpleFeature>)((HashMap) parsedData).get("featureMember"));
 				if (featureList != null){
@@ -162,7 +163,7 @@ public class GML32BasicParser extends AbstractParser {
 						fc.add(feature);
 					}
 				} else {
-					fc = (FeatureCollection) ((Map) parsedData).get("FeatureCollection");
+					fc = (DefaultFeatureCollection ) ((Map) parsedData).get("FeatureCollection");
 				}
 			}
 

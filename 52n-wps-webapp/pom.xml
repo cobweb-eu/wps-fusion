@@ -35,10 +35,10 @@
 			<groupId>${project.groupId}</groupId>
 			<artifactId>52n-wps-commons</artifactId>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>52n-wps-client-lib</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>52n-wps-io</artifactId>
@@ -67,10 +67,10 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>52n-wps-algorithm-impl</artifactId>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>52n-wps-database</artifactId>
@@ -112,11 +112,11 @@
 			<artifactId>52n-wps-io-geotools</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
+		<!-- <dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>52n-wps-r</artifactId>
 			<scope>test</scope>
-		</dependency>
+		</dependency> -->
 		<dependency>
 			<groupId>org.hamcrest</groupId>
 			<artifactId>hamcrest-all</artifactId>
@@ -534,36 +534,36 @@
 					<classifier>geotools</classifier> </configuration> </plugin> </plugins> -->
 			</build>
 			<dependencies>
-				<dependency>
+				<!-- <dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-ags</artifactId>
-				</dependency>
-				<dependency>
+				</dependency> -->
+				<!-- <dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-python</artifactId>
-				</dependency>
+				</dependency> -->
 				<dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-io-geotools</artifactId>
 				</dependency>
-				<dependency>
+				<!-- <dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-algorithm-geotools</artifactId>
-				</dependency>
+				</dependency> -->
 				<dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-fusion</artifactId>
 					<version>3.3.2-SNAPSHOT</version>
 				</dependency>
-				<dependency>
+				<!-- <dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-r</artifactId>
 				</dependency>
 				<dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-grass</artifactId>
-				</dependency>
-				<dependency>
+				</dependency> -->
+				<!-- <dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-mc</artifactId>
 					<exclusions>
@@ -572,11 +572,11 @@
 							<groupId>xml-apis</groupId>
 						</exclusion>
 					</exclusions>
-				</dependency>
-				<dependency>
+				</dependency> -->
+				<!-- <dependency>
 					<groupId>${project.groupId}</groupId>
 					<artifactId>52n-wps-sextante</artifactId>
-				</dependency>
+				</dependency> -->
 			</dependencies>
 		</profile>
 		<profile>

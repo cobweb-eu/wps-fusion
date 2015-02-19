@@ -66,7 +66,7 @@ import org.n52.wps.io.data.IData;
 import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
 import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.data.binding.complex.GeotiffBinding;
-import org.n52.wps.io.data.binding.complex.ShapefileBinding;
+//import org.n52.wps.io.data.binding.complex.ShapefileBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -85,7 +85,7 @@ public class GeoserverWMSGenerator extends AbstractGenerator {
 		
 		super();
 		this.supportedIDataTypes.add(GTRasterDataBinding.class);
-		this.supportedIDataTypes.add(ShapefileBinding.class);
+//		this.supportedIDataTypes.add(ShapefileBinding.class);
 		this.supportedIDataTypes.add(GeotiffBinding.class);
 		this.supportedIDataTypes.add(GTVectorDataBinding.class);
 		
@@ -166,11 +166,11 @@ public class GeoserverWMSGenerator extends AbstractGenerator {
 			file = fileData.getBaseFile(true);
 			
 		}
-		if(coll instanceof ShapefileBinding){
-			ShapefileBinding data = (ShapefileBinding) coll;
-			file = data.getZippedPayload();
-			
-		}
+//		if(coll instanceof ShapefileBinding){
+//			ShapefileBinding data = (ShapefileBinding) coll;
+//			file = data.getZippedPayload();
+//			
+//		}
 		if(coll instanceof GeotiffBinding){
 			GeotiffBinding data = (GeotiffBinding) coll;
 			file = (File) data.getPayload();

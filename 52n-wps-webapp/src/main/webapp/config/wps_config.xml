@@ -130,6 +130,13 @@
 				<Format mimetype="application/hdf4-eos" encoding="base64" />
 				<Format mimetype="text/plain" encoding="base64" />
 			</Parser>
+			<Parser name="GeotiffParser" className="org.n52.wps.io.datahandler.parser.GeotiffParser"
+				active="true">
+				<Format mimetype="image/tiff" encoding="base64" />
+				<Format mimetype="image/geotiff" encoding="base64" />
+				<Format mimetype="image/tiff" />
+				<Format mimetype="image/geotiff" />
+				</Parser>
 			<Parser name="GenericFileDataWithGTParser"
 				className="org.n52.wps.io.datahandler.parser.GenericFileDataWithGTParser"
 				active="true">
@@ -434,6 +441,12 @@
 		</GeneratorList>
 	</Datahandlers>
 	<AlgorithmRepositoryList>
+	
+		<Repository name="LocalAlgorithmRepository"
+			className="org.n52.wps.server.LocalAlgorithmRepository" active="true">
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_GeometryDistance</Property>
+			<!-- <Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.AggregateService</Property> -->
+		</Repository>
 	
 		<Repository name="FusionAlgorithmRepository"
 			className="de.tudresden.gis.fusion.FusionAlgorithmRepository" active="true">

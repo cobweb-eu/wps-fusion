@@ -28,6 +28,7 @@
  */
 package de.tudresden.gis.fusion;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -108,6 +109,18 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	@Override
 	public String getWellKnownName() {
 		return "de.tudresden.gis.fusion.algorithm." + this.fusionOperation.getProfile().getIdentifier().asString().split("#")[1];
+	}
+	
+	@Override
+	public BigInteger getMinOccurs(String id){
+		if(id.equalsIgnoreCase("IN_TARGET") || id.equalsIgnoreCase("IN_REFERENCE"))
+			return new BigInteger("1");
+		return new BigInteger("0");
+	}
+	
+	@Override
+	public BigInteger getMaxOccurs(String identifier){
+		return new BigInteger("1");
 	}
 
 }
