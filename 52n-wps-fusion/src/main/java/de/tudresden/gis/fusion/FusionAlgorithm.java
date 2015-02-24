@@ -35,10 +35,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import net.opengis.wps.x100.ProcessDescriptionType;
+
 import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
 
+import de.tudresden.gis.fusion.data.restrictions.ERestrictions;
 import de.tudresden.gis.fusion.operation.IOperation;
 import de.tudresden.gis.fusion.operation.metadata.IIODescription;
 
@@ -112,9 +115,23 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	}
 	
 	@Override
+	protected ProcessDescriptionType initializeDescription() {
+		ProcessDescriptionType type = super.initializeDescription();
+		type.addNewAbstract().setStringValue(getAbstract());
+		return type;
+	}
+	
+	public String getAbstract() {
+		return this.fusionOperation.getProfile().getProcessDescription();
+	}
+	
+	@Override
 	public BigInteger getMinOccurs(String id){
-		if(id.equalsIgnoreCase("IN_TARGET") || id.equalsIgnoreCase("IN_REFERENCE"))
-			return new BigInteger("1");
+		Collection<IIODescription> ioDesc = fusionOperation.getProfile().getInputDescriptions();
+		for(IIODescription io : ioDesc){
+			if(io.getIdentifier().asString().equalsIgnoreCase(id) && io.getDataRestrictions().contains(ERestrictions.MANDATORY.getRestriction()))
+				return new BigInteger("1");
+		}
 		return new BigInteger("0");
 	}
 	

@@ -42,7 +42,7 @@ import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 
 import de.tudresden.gis.fusion.data.IDataResource;
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
-import de.tudresden.gis.fusion.data.binding.IFeatureRelationBinding;
+import de.tudresden.gis.fusion.data.binding.FeatureRelationBinding;
 import de.tudresden.gis.fusion.data.simple.StringLiteral;
 import de.tudresden.gis.fusion.operation.provision.RDFTurtleGenerator;
 
@@ -50,15 +50,15 @@ public class RelationGenerator extends AbstractGenerator {
 		
 	public RelationGenerator(){
 		super();
-		supportedIDataTypes.add(IFeatureRelationBinding.class);
+		supportedIDataTypes.add(FeatureRelationBinding.class);
 	}
 
 	@Override
 	public InputStream generateStream(IData data, String mimeType, String schema) throws IOException {
 		
-		if(data instanceof IFeatureRelationBinding){
+		if(data instanceof FeatureRelationBinding){
 			//get relation
-			IFeatureRelationCollection relations = ((IFeatureRelationBinding) data).getPayload();
+			IFeatureRelationCollection relations = ((FeatureRelationBinding) data).getPayload();
 			//write relations to file
 			File tempFile = writeToFile(relations);
 			//init temp file
@@ -82,8 +82,8 @@ public class RelationGenerator extends AbstractGenerator {
 		
 		Map<String,de.tudresden.gis.fusion.data.IData> input = new HashMap<String,de.tudresden.gis.fusion.data.IData>();
 		RDFTurtleGenerator generator = new RDFTurtleGenerator();
-		input.put("IN_DATA", relations);
-		input.put("URI_PREFIXES", new StringLiteral(""
+		input.put("IN_RELATIONS", relations);
+		input.put("IN_URI_PREFIXES", new StringLiteral(""
 				+ "http://tu-dresden.de/uw/geo/gis/fusion#;fusion;"
 				+ "http://www.w3.org/1999/02/22-rdf-syntax-ns#;rdf;"
 				+ "http://www.w3.org/2001/XMLSchema#;xsd;"
@@ -93,7 +93,7 @@ public class RelationGenerator extends AbstractGenerator {
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/similarity/topology#;topologyRelation;"
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/similarity/string#;stringRelation"));
 		Map<String,de.tudresden.gis.fusion.data.IData> output = generator.execute(input);	
-		IDataResource file = (IDataResource) output.get("OUT_FILE");
+		IDataResource file = (IDataResource) output.get("OUT_RESOURCE");
 		
 		return new File(file.getIdentifier().asURI().toURL().getFile());
 		

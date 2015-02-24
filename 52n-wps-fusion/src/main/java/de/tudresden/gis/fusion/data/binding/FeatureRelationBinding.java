@@ -32,7 +32,7 @@ import org.n52.wps.io.data.IComplexData;
 
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 
-public class IFeatureRelationBinding implements IComplexData {
+public class FeatureRelationBinding implements IComplexData {
 
 	/**
 	 * default serial id
@@ -45,7 +45,7 @@ public class IFeatureRelationBinding implements IComplexData {
 	 * default constructor
 	 * @param relations input relations
 	 */
-	public IFeatureRelationBinding(IFeatureRelationCollection relations){
+	public FeatureRelationBinding(IFeatureRelationCollection relations){
 		this.relations = relations;
 	}
 

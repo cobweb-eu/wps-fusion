@@ -31,21 +31,14 @@ package de.tudresden.gis.fusion.data.parser;
 import java.io.InputStream;
 
 import org.n52.wps.io.data.IData;
-import org.n52.wps.io.data.binding.complex.GTRasterDataBinding;
 import org.n52.wps.io.datahandler.parser.AbstractParser;
-import org.n52.wps.io.datahandler.parser.GeotiffParser;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import de.tudresden.gis.fusion.data.binding.IFeatureRelationBinding;
+import de.tudresden.gis.fusion.data.binding.FeatureRelationBinding;
 
 public class RelationParser extends AbstractParser {
 
-	private static Logger LOGGER = LoggerFactory.getLogger(GeotiffParser.class);
-
 	public RelationParser() {
 		super();
-		supportedIDataTypes.add(IFeatureRelationBinding.class);
+		supportedIDataTypes.add(FeatureRelationBinding.class);
 	}
 	
 	@Override

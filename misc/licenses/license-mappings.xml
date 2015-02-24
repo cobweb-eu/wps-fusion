@@ -25,13 +25,13 @@
 	<artifact>
         <groupId>de.tudresden.gis</groupId>
         <artifactId>fusion-base</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.4-SNAPSHOT</version>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>
     <artifact>
         <groupId>de.tudresden.gis</groupId>
         <artifactId>fusion-impl</artifactId>
-        <version>0.0.3-SNAPSHOT</version>
+        <version>0.0.4-SNAPSHOT</version>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>
     <artifact>

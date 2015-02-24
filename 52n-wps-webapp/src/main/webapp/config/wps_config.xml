@@ -7,8 +7,14 @@
 			<Parser name="RelationParser" className="de.tudresden.gis.fusion.data.parser.RelationParser" active="true">
 				<Format mimetype="text/turtle" encoding="UTF-8" />
 			</Parser>
+			<Parser name="GMLParser" className="de.tudresden.gis.fusion.data.parser.GMLParser" active="true">
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.1"
+					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+			</Parser>
 			
-			<Parser name="GML3BasicParser"
+			<!-- <Parser name="GML3BasicParser"
 				className="org.n52.wps.io.datahandler.parser.GML3BasicParser"
 				active="true">
 				<Format mimetype="text/xml"
@@ -84,8 +90,8 @@
 					schema="http://schemas.opengis.net/gml/2.1.2/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/2.1.2.1"
 					schema="http://schemas.opengis.net/gml/2.1.2.1/feature.xsd" />
-			</Parser>
-			<Parser name="GenericFileParser"
+			</Parser> -->
+			<!-- <Parser name="GenericFileParser"
 				className="org.n52.wps.io.datahandler.parser.GenericFileParser"
 				active="true">
 				<Format mimetype="application/x-zipped-shp" />
@@ -129,15 +135,15 @@
 				<Format mimetype="application/x-geotiff" encoding="base64" />
 				<Format mimetype="application/hdf4-eos" encoding="base64" />
 				<Format mimetype="text/plain" encoding="base64" />
-			</Parser>
+			</Parser> -->
 			<Parser name="GeotiffParser" className="org.n52.wps.io.datahandler.parser.GeotiffParser"
 				active="true">
 				<Format mimetype="image/tiff" encoding="base64" />
 				<Format mimetype="image/geotiff" encoding="base64" />
 				<Format mimetype="image/tiff" />
 				<Format mimetype="image/geotiff" />
-				</Parser>
-			<Parser name="GenericFileDataWithGTParser"
+			</Parser>
+			<!-- <Parser name="GenericFileDataWithGTParser"
 				className="org.n52.wps.io.datahandler.parser.GenericFileDataWithGTParser"
 				active="true">
 				<Format mimetype="application/x-zipped-shp" />
@@ -188,8 +194,8 @@
 				<Format mimetype="application/x-zipped-shp" encoding="base64" />
 
 				<Format mimetype="application/x-zipped-shp" />
-			</Parser>
-			<Parser name="GML3BasicParser4Files"
+			</Parser> -->
+			<!-- <Parser name="GML3BasicParser4Files"
 				className="org.n52.wps.io.datahandler.parser.GML3BasicParser4Files"
 				active="true">
 				<Format mimetype="text/xml"
@@ -212,24 +218,7 @@
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/3.2.1"
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
-			</Parser>
-			<Parser name="KMLParser" className="org.n52.wps.io.datahandler.parser.KMLParser"
-				active="true">
-				<Format mimetype="application/vnd.google-earth.kml+xml"
-					schema="http://schemas.opengis.net/kml/2.2.0/ogckml22.xsd" />
-			</Parser>
-			<Parser name="GTBinZippedWKT64Parser"
-				className="org.n52.wps.io.datahandler.parser.GTBinZippedWKT64Parser"
-				active="true">
-				<Format mimetype="application/x-zipped-wkt" encoding="Base64"/>
-			</Parser>
-			<Parser name="GenericXMLDataParser"
-				className="org.n52.wps.io.datahandler.parser.GenericXMLDataParser"
-				active="true">
-				<Format mimetype="text/xml" />
-				<Format mimetype="text/xml; subtype=gml/2.1.2"
-					schema="http://schemas.opengis.net/gml/2.1.2/feature.xsd" />
-			</Parser>
+			</Parser> -->
 		</ParserList>
 		<GeneratorList>
 		
@@ -237,10 +226,28 @@
 				<Format mimetype="text/turtle" encoding="UTF-8" />
 			</Generator>
 
-			<Generator name="JSONGeometryGenerator" className="org.n52.wps.io.datahandler.generator.JSONGeometryGenerator" active="true">
+			<!-- <Generator name="JSONGeometryGenerator" className="org.n52.wps.io.datahandler.generator.JSONGeometryGenerator" active="true">
 				<Format mimetype="application/x-jsongeometry" encoding="UTF-8" />
-			</Generator>
+			</Generator> -->
 			<Generator name="GML3BasicGenerator"
+				className="de.tudresden.gis.fusion.data.generator.GML3Generator"
+				active="true">
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
+				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
+			</Generator>
+			<Generator name="GeotiffGenerator"
+				className="org.n52.wps.io.datahandler.generator.GeotiffGenerator"
+				active="true">
+				<Format mimetype="image/tiff" encoding="base64" />
+				<Format mimetype="image/geotiff" encoding="base64" />
+				<Format mimetype="image/tiff" />
+				<Format mimetype="image/geotiff" />
+			</Generator>
+			<!-- <Generator name="GML3BasicGenerator"
 				className="org.n52.wps.io.datahandler.generator.GML3BasicGenerator"
 				active="true">
 				<Format mimetype="text/xml"
@@ -265,8 +272,8 @@
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
 				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
 				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
-			</Generator>
-			<Generator name="GML2BasicGenerator"
+			</Generator> -->
+			<!-- <Generator name="GML2BasicGenerator"
 				className="org.n52.wps.io.datahandler.generator.GML2BasicGenerator"
 				active="true">
 				<Format mimetype="text/xml"
@@ -287,8 +294,8 @@
 					schema="http://schemas.opengis.net/gml/2.1.2.1/feature.xsd" />
 				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
 				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
-			</Generator>
-			<Generator name="SimpleGMLGenerator"
+			</Generator> -->
+			<!-- <Generator name="SimpleGMLGenerator"
 				className="org.n52.wps.io.datahandler.generator.SimpleGMLGenerator"
 				active="true">
 				<Format mimetype="text/xml"
@@ -297,8 +304,8 @@
 					schema="http://geoserver.itc.nl:8080/wps/schemas/gml/2.1.2/gmlpacket.xsd" />
 				<Format mimetype="text/xml"
 					schema="http://schemas.opengis.net/gml/2.1.2/gmlpacket.xsd" />
-			</Generator>
-			<Generator name="GTBinZippedSHPGenerator"
+			</Generator> -->
+			<!-- <Generator name="GTBinZippedSHPGenerator"
 				className="org.n52.wps.io.datahandler.generator.GTBinZippedSHPGenerator"
 				active="true">
 				<Format mimetype="application/x-zipped-shp" encoding="base64" />
@@ -436,7 +443,7 @@
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/3.2.1"
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
-			</Generator>
+			</Generator> -->
 
 		</GeneratorList>
 	</Datahandlers>
@@ -445,7 +452,6 @@
 		<Repository name="LocalAlgorithmRepository"
 			className="org.n52.wps.server.LocalAlgorithmRepository" active="true">
 			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_GeometryDistance</Property>
-			<!-- <Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.AggregateService</Property> -->
 		</Repository>
 	
 		<Repository name="FusionAlgorithmRepository"
@@ -455,7 +461,7 @@
   </AlgorithmRepositoryList>
 	<RemoteRepositoryList />
 	
-	<Server protocol="http" hostname="localhost" hostport="8080"
+	<Server protocol="http" hostname="localhost" hostport="8081"
 		includeDataInputsInResponse="false" computationTimeoutMilliSeconds="5"
 		cacheCapabilites="false" webappPath="wps_conflation" repoReloadInterval="0" maxPoolSize="20" keepAliveSeconds="1000" maxQueuedTasks="100" minPoolSize="10">
 		<!-- Setting to 'true' will enable filtering of responses documents.  Any server URL in

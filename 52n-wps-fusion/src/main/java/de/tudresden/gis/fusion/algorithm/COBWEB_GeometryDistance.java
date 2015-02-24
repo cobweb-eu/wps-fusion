@@ -55,9 +55,8 @@ import org.slf4j.LoggerFactory;
 import de.tudresden.gis.fusion.data.IData;
 import de.tudresden.gis.fusion.data.IFeatureRelation;
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
-import de.tudresden.gis.fusion.data.binding.IFeatureRelationBinding;
+import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
 import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.rdf.IRI;
 import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
 
 @Algorithm(abstrakt="Determines distance relation between input features", version="1.0")
@@ -71,8 +70,8 @@ public class COBWEB_GeometryDistance extends AbstractAnnotatedAlgorithm {
 	private final String IN_THRESHOLD = "IN_THRESHOLD";
 	
 	//input data
-	private SimpleFeatureCollection inReference;
-	private SimpleFeatureCollection inTarget;
+	private GTFeatureCollection inReference;
+	private GTFeatureCollection inTarget;
 	private SimpleFeatureCollection outTarget;
 	private double inBuffer;
 	
@@ -90,14 +89,14 @@ public class COBWEB_GeometryDistance extends AbstractAnnotatedAlgorithm {
         super();
     }
 
-    @ComplexDataInput(identifier=IN_REFERENCE, title="reference features", binding=GTVectorDataBinding.class, minOccurs=1, maxOccurs=1)
-    public void setReference(FeatureCollection<?,?> inReference) {
-        this.inReference = (SimpleFeatureCollection) inReference;
+    @ComplexDataInput(identifier=IN_REFERENCE, title="reference features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
+    public void setReference(GTFeatureCollection inReference) {
+        this.inReference = inReference;
     }
     
-    @ComplexDataInput(identifier=IN_TARGET, title="target features", binding=GTVectorDataBinding.class, minOccurs=1, maxOccurs=1)
-    public void setTarget(FeatureCollection<?,?> inTarget) {
-        this.inTarget = (SimpleFeatureCollection) inTarget;
+    @ComplexDataInput(identifier=IN_TARGET, title="target features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
+    public void setTarget(GTFeatureCollection inTarget) {
+        this.inTarget = inTarget;
     }
     
     @LiteralDataInput(identifier=IN_THRESHOLD, title="threshold distance for relations" , binding=LiteralDoubleBinding.class, maxOccurs=1)
@@ -125,14 +124,14 @@ public class COBWEB_GeometryDistance extends AbstractAnnotatedAlgorithm {
     	
     	//get relations
     	Map<String,IData> input = new HashMap<String,IData>();
-    	input.put(IN_REFERENCE, new GTFeatureCollection(new IRI(IN_REFERENCE), inReference));
-    	input.put(IN_TARGET, new GTFeatureCollection(new IRI(IN_TARGET), inTarget));
+    	input.put(IN_REFERENCE, inReference);
+    	input.put(IN_TARGET, inTarget);
     	input.put(IN_THRESHOLD, new DecimalLiteral(inBuffer));
 		
 		Map<String,IData> output = new de.tudresden.gis.fusion.operation.relation.similarity.GeometryDistance().execute(input);
 		
 		relations = (IFeatureRelationCollection) output.get("OUT_RELATIONS");
-		outTarget = addRelations(inTarget, relations);
+		outTarget = addRelations(inTarget.getSimpleFeatureCollection(), relations);
 		
     	LOGGER.info("Relation measurement returned " + relations.size() + " results");
     }
