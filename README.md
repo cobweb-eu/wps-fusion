@@ -1,4 +1,4 @@
-# WPS offering spatial data fusion processes
+# WPS offering spatial data fusion processes 4 COBWEB
 
 fusion branch for 52n WPS
 
