@@ -40,10 +40,10 @@ import java.util.Map;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 
-import de.tudresden.gis.fusion.data.IDataResource;
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.FeatureRelationBinding;
 import de.tudresden.gis.fusion.data.simple.StringLiteral;
+import de.tudresden.gis.fusion.data.simple.URILiteral;
 import de.tudresden.gis.fusion.operation.provision.RDFTurtleGenerator;
 
 public class RelationGenerator extends AbstractGenerator {
@@ -82,20 +82,20 @@ public class RelationGenerator extends AbstractGenerator {
 		
 		Map<String,de.tudresden.gis.fusion.data.IData> input = new HashMap<String,de.tudresden.gis.fusion.data.IData>();
 		RDFTurtleGenerator generator = new RDFTurtleGenerator();
-		input.put("IN_RELATIONS", relations);
+		input.put("IN_RDF", relations);
 		input.put("IN_URI_PREFIXES", new StringLiteral(""
 				+ "http://tu-dresden.de/uw/geo/gis/fusion#;fusion;"
 				+ "http://www.w3.org/1999/02/22-rdf-syntax-ns#;rdf;"
 				+ "http://www.w3.org/2001/XMLSchema#;xsd;"
-				+ "http://tu-dresden.de/uw/geo/gis/fusion/process/demo#;demo;"
+				+ "http://tu-dresden.de/uw/geo/gis/fusion/process/;process;"
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/confidence/statisticalConfidence#;statisticalConfidence;"
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/similarity/spatial#;spatialRelation;"
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/similarity/topology#;topologyRelation;"
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/similarity/string#;stringRelation"));
 		Map<String,de.tudresden.gis.fusion.data.IData> output = generator.execute(input);	
-		IDataResource file = (IDataResource) output.get("OUT_RESOURCE");
+		URILiteral file = (URILiteral) output.get("OUT_RESOURCE");
 		
-		return new File(file.getIdentifier().asURI().toURL().getFile());
+		return new File(file.getIdentifier());
 		
 	}
 	

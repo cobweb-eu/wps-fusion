@@ -28,6 +28,7 @@
  */
 package de.tudresden.gis.fusion;
 
+import java.net.URI;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -43,7 +44,6 @@ import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
 import de.tudresden.gis.fusion.data.ICoverage;
 import de.tudresden.gis.fusion.data.IData;
-import de.tudresden.gis.fusion.data.IDataResource;
 import de.tudresden.gis.fusion.data.IFeatureCollection;
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.FeatureRelationBinding;
@@ -51,15 +51,15 @@ import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
 import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
 import de.tudresden.gis.fusion.data.geotools.GTGridCoverage2D;
 import de.tudresden.gis.fusion.data.rdf.IRI;
-import de.tudresden.gis.fusion.data.rdf.Resource;
 import de.tudresden.gis.fusion.data.restrictions.JavaBindingRestriction;
 import de.tudresden.gis.fusion.data.simple.BooleanLiteral;
 import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
 import de.tudresden.gis.fusion.data.simple.IntegerLiteral;
 import de.tudresden.gis.fusion.data.simple.LongLiteral;
 import de.tudresden.gis.fusion.data.simple.StringLiteral;
-import de.tudresden.gis.fusion.operation.io.IDataRestriction;
-import de.tudresden.gis.fusion.operation.metadata.IIODescription;
+import de.tudresden.gis.fusion.data.simple.URILiteral;
+import de.tudresden.gis.fusion.metadata.data.IIODescription;
+import de.tudresden.gis.fusion.operation.io.IIORestriction;
 
 public class DataTransformer {
 	
@@ -89,7 +89,7 @@ public class DataTransformer {
 		if(data instanceof FeatureRelationBinding)
 			return ((FeatureRelationBinding) data).getPayload();
 		if(data instanceof LiteralAnyURIBinding)
-			return new Resource(new IRI(((LiteralAnyURIBinding) data).getPayload()));
+			return new URILiteral(((LiteralAnyURIBinding) data).getPayload());
 		
 		return null;
 	}
@@ -126,8 +126,8 @@ public class DataTransformer {
 			return new GTRasterDataBinding(((GTGridCoverage2D) data).getCoverage());
 		if(data instanceof IFeatureRelationCollection)
 			return new FeatureRelationBinding((IFeatureRelationCollection) data);
-		if(data instanceof IDataResource)
-			return new LiteralAnyURIBinding(((IDataResource) data).getIdentifier().asURI());
+		if(data instanceof URILiteral)
+			return new LiteralAnyURIBinding(URI.create(((URILiteral) data).getIdentifier()));
 		
 		return null;
 	}
@@ -139,7 +139,7 @@ public class DataTransformer {
 	 */
 	public static Class<?> getSupportedClass(IIODescription description){
 		
-		for(IDataRestriction restriction : description.getDataRestrictions()){
+		for(IIORestriction restriction : description.getDataRestrictions()){
 			if(restriction instanceof JavaBindingRestriction)
 				return getSupportedClass((JavaBindingRestriction) restriction);
 		}
@@ -170,7 +170,7 @@ public class DataTransformer {
 			return GTRasterDataBinding.class;
 		if(restriction.compliantWith(IFeatureRelationCollection.class))
 			return FeatureRelationBinding.class;
-		if(restriction.compliantWith(IDataResource.class))
+		if(restriction.compliantWith(URILiteral.class))
 			return LiteralAnyURIBinding.class;
 		
 		return null;

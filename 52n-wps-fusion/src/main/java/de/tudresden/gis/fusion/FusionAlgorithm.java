@@ -42,8 +42,8 @@ import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
 
 import de.tudresden.gis.fusion.data.restrictions.ERestrictions;
+import de.tudresden.gis.fusion.metadata.data.IIODescription;
 import de.tudresden.gis.fusion.operation.IOperation;
-import de.tudresden.gis.fusion.operation.metadata.IIODescription;
 
 public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	
@@ -73,7 +73,7 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	public Class<?> getInputDataType(String id) {
 		Collection<IIODescription> descriptions = fusionOperation.getProfile().getInputDescriptions();
 		for(IIODescription description : descriptions){
-			if(description.getIdentifier().asString().equals(id))
+			if(description.getIdentifier().equals(id))
 				return DataTransformer.getSupportedClass(description);
 		}
 		return null;
@@ -83,7 +83,7 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	public Class<?> getOutputDataType(String id) {
 		Collection<IIODescription> descriptions = fusionOperation.getProfile().getOutputDescriptions();
 		for(IIODescription description : descriptions){
-			if(description.getIdentifier().asString().equals(id))
+			if(description.getIdentifier().equals(id))
 				return DataTransformer.getSupportedClass(description);
 		}
 		return null;
@@ -94,7 +94,7 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 		Collection<IIODescription> descriptions = fusionOperation.getProfile().getInputDescriptions();
 		List<String> identifiers = new ArrayList<String>();
 		for(IIODescription description : descriptions){
-			identifiers.add(description.getIdentifier().asString());
+			identifiers.add(description.getIdentifier());
 		}
 		return identifiers;
 	}
@@ -104,14 +104,14 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 		Collection<IIODescription> descriptions = fusionOperation.getProfile().getOutputDescriptions();
 		List<String> identifiers = new ArrayList<String>();
 		for(IIODescription description : descriptions){
-			identifiers.add(description.getIdentifier().asString());
+			identifiers.add(description.getIdentifier());
 		}
 		return identifiers;
 	}
 	
 	@Override
 	public String getWellKnownName() {
-		return "de.tudresden.gis.fusion.algorithm." + this.fusionOperation.getProfile().getIdentifier().asString().split("#")[1];
+		return "de.tudresden.gis.fusion.algorithm." + this.fusionOperation.getProfile().getProcessName();
 	}
 	
 	@Override
@@ -129,7 +129,7 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	public BigInteger getMinOccurs(String id){
 		Collection<IIODescription> ioDesc = fusionOperation.getProfile().getInputDescriptions();
 		for(IIODescription io : ioDesc){
-			if(io.getIdentifier().asString().equalsIgnoreCase(id) && io.getDataRestrictions().contains(ERestrictions.MANDATORY.getRestriction()))
+			if(io.getIdentifier().equalsIgnoreCase(id) && io.getDataRestrictions().contains(ERestrictions.MANDATORY.getRestriction()))
 				return new BigInteger("1");
 		}
 		return new BigInteger("0");

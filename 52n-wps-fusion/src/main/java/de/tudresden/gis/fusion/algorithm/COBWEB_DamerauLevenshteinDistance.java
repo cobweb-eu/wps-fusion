@@ -36,7 +36,8 @@ import org.n52.wps.algorithm.annotation.ComplexDataInput;
 import org.n52.wps.algorithm.annotation.ComplexDataOutput;
 import org.n52.wps.algorithm.annotation.Execute;
 import org.n52.wps.algorithm.annotation.LiteralDataInput;
-import org.n52.wps.io.data.binding.literal.LiteralDoubleBinding;
+import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
+import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,24 +45,29 @@ import de.tudresden.gis.fusion.data.IData;
 import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
 import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
+import de.tudresden.gis.fusion.data.simple.IntegerLiteral;
+import de.tudresden.gis.fusion.data.simple.StringLiteral;
 
 @Algorithm(abstrakt="Determines distance relation between input features", version="1.0")
-public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
+public class COBWEB_DamerauLevenshteinDistance extends COBWEB_Algorithm {
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(COBWEB_GeometryDistance.class);
+	private static Logger LOGGER = LoggerFactory.getLogger(COBWEB_DamerauLevenshteinDistance.class);
 	private final String NEW_ATT = "relation_" + System.currentTimeMillis();
 	
 	//input identifier
 	private final String IN_REFERENCE = "IN_REFERENCE";
+	private final String IN_REFERENCE_ATT = "IN_REFERENCE_ATT";
 	private final String IN_TARGET = "IN_TARGET";
+	private final String IN_TARGET_ATT = "IN_TARGET_ATT";
 	private final String IN_THRESHOLD = "IN_THRESHOLD";
 	
 	//input data
 	private GTFeatureCollection inReference;
+	private String inReferenceAtt;
 	private GTFeatureCollection inTarget;
+	private String inTargetAtt;
 	private GTFeatureCollection outReference;
-	private double inBuffer;
+	private int inThreshold;
 	
 	//output identifier
 	private final String OUT_REFERENCE = "OUT_REFERENCE";
@@ -70,7 +76,7 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
 	private IFeatureRelationCollection relations;
 
 	//constructor
-    public COBWEB_GeometryDistance() {
+    public COBWEB_DamerauLevenshteinDistance() {
         super();
     }
 
@@ -79,18 +85,28 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
         this.inReference = inReference;
     }
     
+    @LiteralDataInput(identifier=IN_REFERENCE_ATT, title="reference attribute" , binding=LiteralStringBinding.class, minOccurs=1, maxOccurs=1)
+    public void setReferenceAtt(String inReferenceAtt) {
+    	this.inReferenceAtt = inReferenceAtt;
+    }
+    
     @ComplexDataInput(identifier=IN_TARGET, title="target features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
     public void setTarget(GTFeatureCollection inTarget) {
         this.inTarget = inTarget;
     }
     
-    @LiteralDataInput(identifier=IN_THRESHOLD, title="threshold distance for relations" , binding=LiteralDoubleBinding.class, minOccurs=1, maxOccurs=1)
-    public void setBuffer(double inBuffer) {
-    	this.inBuffer = inBuffer;
+    @LiteralDataInput(identifier=IN_TARGET_ATT, title="target attribute" , binding=LiteralStringBinding.class, minOccurs=1, maxOccurs=1)
+    public void setTargetAtt(String inTargetAtt) {
+    	this.inTargetAtt = inTargetAtt;
     }
     
-	@ComplexDataOutput(identifier=OUT_REFERENCE, title="reference features with relations to target", binding=GTFeatureCollectionBinding.class)
-    public GTFeatureCollection getReference() {
+    @LiteralDataInput(identifier=IN_THRESHOLD, title="threshold distance for relations" , binding=LiteralIntBinding.class, maxOccurs=1, defaultValue="5")
+    public void setBuffer(int inThreshold) {
+    	this.inThreshold = inThreshold;
+    }
+    
+	@ComplexDataOutput(identifier=OUT_REFERENCE, title="reference features with attribute relations", binding=GTFeatureCollectionBinding.class)
+    public GTFeatureCollection getTarget() {
         return outReference;
     }
     
@@ -99,15 +115,17 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
     	
     	LOGGER.info("Number of reference features: " + inReference.size());
     	LOGGER.info("Number of target features: " + inTarget.size());
-    	LOGGER.info("Distance threshold: " + inBuffer);
+    	LOGGER.info("Distance threshold: " + inThreshold);
     	
     	//get relations
     	Map<String,IData> input = new HashMap<String,IData>();
     	input.put(IN_REFERENCE, inReference);
+    	input.put(IN_REFERENCE_ATT, new StringLiteral(inReferenceAtt));
     	input.put(IN_TARGET, inTarget);
-    	input.put(IN_THRESHOLD, new DecimalLiteral(inBuffer));
+    	input.put(IN_TARGET_ATT, new StringLiteral(inTargetAtt));
+    	input.put(IN_THRESHOLD, new IntegerLiteral(inThreshold));
 		
-		Map<String,IData> output = new de.tudresden.gis.fusion.operation.relation.similarity.GeometryDistance().execute(input);
+		Map<String,IData> output = new de.tudresden.gis.fusion.operation.relation.similarity.DamerauLevenshteinDistance().execute(input);
 		
 		relations = (IFeatureRelationCollection) output.get("OUT_RELATIONS");
 		outReference = new GTFeatureCollection(inReference.getIdentifier(), addRelations(inReference.getSimpleFeatureCollection(), relations, NEW_ATT));

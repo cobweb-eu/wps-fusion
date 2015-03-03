@@ -9,7 +9,23 @@
 			</Parser>
 			<Parser name="GMLParser" className="de.tudresden.gis.fusion.data.parser.GMLParser" active="true">
 				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.2.1"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.0"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.1"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.0"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/3.1.1"
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
 			</Parser>
@@ -230,7 +246,7 @@
 				<Format mimetype="application/x-jsongeometry" encoding="UTF-8" />
 			</Generator> -->
 			<Generator name="GML3BasicGenerator"
-				className="org.n52.wps.io.datahandler.generator.GML3BasicGenerator"
+				className="de.tudresden.gis.fusion.data.generator.GML3Generator"
 				active="true">
 				<Format mimetype="text/xml"
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
@@ -255,7 +271,41 @@
 				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
 				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
 			</Generator>
-			<Generator name="GML2BasicGenerator"
+			<Generator name="GeotiffGenerator"
+				className="org.n52.wps.io.datahandler.generator.GeotiffGenerator"
+				active="true">
+				<Format mimetype="image/tiff" encoding="base64" />
+				<Format mimetype="image/geotiff" encoding="base64" />
+				<Format mimetype="image/tiff" />
+				<Format mimetype="image/geotiff" />
+			</Generator>
+			<!-- <Generator name="GML3BasicGenerator"
+				className="org.n52.wps.io.datahandler.generator.GML3BasicGenerator"
+				active="true">
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.0"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.1"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.0"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.1"
+					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.2.1"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
+				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
+			</Generator> -->
+			<!-- <Generator name="GML2BasicGenerator"
 				className="org.n52.wps.io.datahandler.generator.GML2BasicGenerator"
 				active="true">
 				<Format mimetype="text/xml"
@@ -276,7 +326,7 @@
 					schema="http://schemas.opengis.net/gml/2.1.2.1/feature.xsd" />
 				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
 				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
-			</Generator>
+			</Generator> -->
 			<!-- <Generator name="SimpleGMLGenerator"
 				className="org.n52.wps.io.datahandler.generator.SimpleGMLGenerator"
 				active="true">
@@ -434,6 +484,9 @@
 		<Repository name="LocalAlgorithmRepository"
 			className="org.n52.wps.server.LocalAlgorithmRepository" active="true">
 			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_GeometryDistance</Property>
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_DamerauLevenshteinDistance</Property>
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_TopologyRelation</Property>
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_ZonalStats</Property>
 		</Repository>
 	
 		<Repository name="FusionAlgorithmRepository"
@@ -443,7 +496,7 @@
   </AlgorithmRepositoryList>
 	<RemoteRepositoryList />
 	
-	<Server protocol="http" hostname="localhost" hostport="8081"
+	<Server protocol="http" hostname="cobweb.gis.geo.tu-dresden.de" hostport="8080"
 		includeDataInputsInResponse="false" computationTimeoutMilliSeconds="5"
 		cacheCapabilites="false" webappPath="wps_conflation" repoReloadInterval="0" maxPoolSize="20" keepAliveSeconds="1000" maxQueuedTasks="100" minPoolSize="10">
 		<!-- Setting to 'true' will enable filtering of responses documents.  Any server URL in

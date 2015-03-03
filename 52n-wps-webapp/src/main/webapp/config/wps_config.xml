@@ -9,7 +9,23 @@
 			</Parser>
 			<Parser name="GMLParser" className="de.tudresden.gis.fusion.data.parser.GMLParser" active="true">
 				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.2.1"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.0"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.1"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.0"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/3.1.1"
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
 			</Parser>
@@ -236,6 +252,22 @@
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
 				<Format mimetype="text/xml"
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.0"
+					schema="http://schemas.opengis.net/gml/3.0.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.0.1"
+					schema="http://schemas.opengis.net/gml/3.0.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.0"
+					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.1.1"
+					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
+				<Format mimetype="text/xml; subtype=gml/3.2.1"
+					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
 				<Property name="featureTransformerIncludeBounding" active="true">false</Property>
 				<Property name="featureTransformerDecimalPlaces" active="true">4</Property>
 			</Generator>
@@ -452,6 +484,9 @@
 		<Repository name="LocalAlgorithmRepository"
 			className="org.n52.wps.server.LocalAlgorithmRepository" active="true">
 			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_GeometryDistance</Property>
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_DamerauLevenshteinDistance</Property>
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_TopologyRelation</Property>
+			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_ZonalStats</Property>
 		</Repository>
 	
 		<Repository name="FusionAlgorithmRepository"
@@ -461,9 +496,9 @@
   </AlgorithmRepositoryList>
 	<RemoteRepositoryList />
 	
-	<Server protocol="http" hostname="localhost" hostport="8081"
+	<Server protocol="http" hostname="localhost" hostport="8080"
 		includeDataInputsInResponse="false" computationTimeoutMilliSeconds="5"
-		cacheCapabilites="false" webappPath="wps_conflation" repoReloadInterval="0" maxPoolSize="20" keepAliveSeconds="1000" maxQueuedTasks="100" minPoolSize="10">
+		cacheCapabilites="false" webappPath="52n-wps-webapp" repoReloadInterval="0" maxPoolSize="20" keepAliveSeconds="1000" maxQueuedTasks="100" minPoolSize="10">
 		<!-- Setting to 'true' will enable filtering of responses documents.  Any server URL in
              the response document will be replaced with the server URL used in the HTTP request. --> 
         <Property name="responseURLFilterEnabled" active="true">false</Property>

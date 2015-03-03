@@ -43,7 +43,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.tudresden.gis.fusion.manage.Operations;
-import de.tudresden.gis.fusion.operation.IOperation;
+import de.tudresden.gis.fusion.operation.IMeasurementOperation;
 
 public class FusionAlgorithmRepository implements ITransactionalAlgorithmRepository {
 	
@@ -64,8 +64,8 @@ public class FusionAlgorithmRepository implements ITransactionalAlgorithmReposit
 		if(WPSConfig.getInstance().isRepositoryActive(this.getClass().getCanonicalName())){
 			
 			//load operations from fusion package
-			Set<Class<? extends IOperation>> operationClasses = Operations.getAvalaibleOperations();
-			for(Class<? extends IOperation> operationClass : operationClasses){
+			Set<Class<? extends IMeasurementOperation>> operationClasses = Operations.getRelationMeasurementOperations();
+			for(Class<? extends IMeasurementOperation> operationClass : operationClasses){
 				try {
 					FusionAlgorithm operation = new FusionAlgorithm(operationClass.newInstance());
 					fusionOperations.put(operation.getWellKnownName(), operation);
