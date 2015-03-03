@@ -1,6 +1,7 @@
 # WPS offering spatial data fusion processes
 
 fusion branch for 52n WPS
+
 Description taken from https://github.com/52North/WPS:
 
 The 52°North Web Processing Service (WPS) enables the deployment of geo-processes on the web in
