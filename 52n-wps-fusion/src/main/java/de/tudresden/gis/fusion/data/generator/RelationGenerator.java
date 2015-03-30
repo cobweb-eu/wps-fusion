@@ -94,8 +94,8 @@ public class RelationGenerator extends AbstractGenerator {
 				+ "http://tu-dresden.de/uw/geo/gis/fusion/similarity/string#;stringRelation"));
 		Map<String,de.tudresden.gis.fusion.data.IData> output = generator.execute(input);	
 		URILiteral file = (URILiteral) output.get("OUT_RESOURCE");
-		
-		return new File(file.getIdentifier());
+		// must replace 'file:/'
+		return new File(file.getIdentifier().replaceFirst("file:/", ""));
 		
 	}
 	

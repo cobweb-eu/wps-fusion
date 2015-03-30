@@ -235,11 +235,20 @@
 				<Format mimetype="text/xml; subtype=gml/3.2.1"
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
 			</Parser> -->
+			
+			<Parser name="GeoJSONParser" className="de.tudresden.gis.fusion.data.parser.GeoJSONParser" active="true">
+                 <Format mimetype="application/json"/>
+            </Parser>
+             
 		</ParserList>
 		<GeneratorList>
 		
 			<Generator name="RelationTurtleGenerator" className="de.tudresden.gis.fusion.data.generator.RelationGenerator" active="true">
 				<Format mimetype="text/turtle" encoding="UTF-8" />
+			</Generator>
+			
+			<Generator name="GeoJSONGenerator" className="de.tudresden.gis.fusion.data.generator.GeoJSONGenerator" active="true">
+				<Format mimetype="application/json" />
 			</Generator>
 
 			<!-- <Generator name="JSONGeometryGenerator" className="org.n52.wps.io.datahandler.generator.JSONGeometryGenerator" active="true">
