@@ -207,7 +207,7 @@
 		<slf4j.version>1.7.5</slf4j.version>
 		<logback.version>1.0.13</logback.version>
 		<!-- <geotools.version>8.7</geotools.version> -->
-		<geotools.version>12.2</geotools.version>
+		<geotools.version>13.2</geotools.version>
 		<apache.ode.version>1.3.3</apache.ode.version>
 		<apache.axis2.version>1.5.1</apache.axis2.version>
 		<currentYear>2015</currentYear> <!-- manual setting -->
@@ -219,13 +219,23 @@
 			<!-- fusion -->
 			<dependency>
 				<groupId>de.tudresden.gis</groupId>
-				<artifactId>fusion-base</artifactId>
-				<version>0.0.4-SNAPSHOT</version>
+				<artifactId>fusion-data</artifactId>
+				<version>0.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>de.tudresden.gis</groupId>
-				<artifactId>fusion-impl</artifactId>
-				<version>0.0.4-SNAPSHOT</version>
+				<artifactId>fusion-data-impl</artifactId>
+				<version>0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudresden.gis</groupId>
+				<artifactId>fusion-operation</artifactId>
+				<version>0.1-SNAPSHOT</version>
+			</dependency>
+			<dependency>
+				<groupId>de.tudresden.gis</groupId>
+				<artifactId>fusion-operation-impl</artifactId>
+				<version>0.1-SNAPSHOT</version>
 			</dependency>
 			<!-- testing -->
 			<dependency>

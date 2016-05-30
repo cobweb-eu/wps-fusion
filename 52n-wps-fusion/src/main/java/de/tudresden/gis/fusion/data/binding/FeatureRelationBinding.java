@@ -30,7 +30,7 @@ package de.tudresden.gis.fusion.data.binding;
 
 import org.n52.wps.io.data.IComplexData;
 
-import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
+import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
 
 public class FeatureRelationBinding implements IComplexData {
 
@@ -39,24 +39,24 @@ public class FeatureRelationBinding implements IComplexData {
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	protected transient IFeatureRelationCollection relations;
+	protected transient FeatureRelationCollection relations;
 	
 	/**
 	 * default constructor
 	 * @param relations input relations
 	 */
-	public FeatureRelationBinding(IFeatureRelationCollection relations){
+	public FeatureRelationBinding(FeatureRelationCollection relations){
 		this.relations = relations;
 	}
 
 	@Override
-	public IFeatureRelationCollection getPayload() {
+	public FeatureRelationCollection getPayload() {
 		return relations;
 	}
 
 	@Override
-	public Class<IFeatureRelationCollection> getSupportedClass() {
-		return IFeatureRelationCollection.class;
+	public Class<FeatureRelationCollection> getSupportedClass() {
+		return FeatureRelationCollection.class;
 	}
 
 	@Override

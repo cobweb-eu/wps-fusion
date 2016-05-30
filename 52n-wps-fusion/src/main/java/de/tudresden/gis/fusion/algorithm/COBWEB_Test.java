@@ -28,79 +28,51 @@
  */
 package de.tudresden.gis.fusion.algorithm;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import org.geotools.feature.FeatureCollection;
 import org.n52.wps.algorithm.annotation.Algorithm;
 import org.n52.wps.algorithm.annotation.ComplexDataInput;
 import org.n52.wps.algorithm.annotation.ComplexDataOutput;
 import org.n52.wps.algorithm.annotation.Execute;
+import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.tudresden.gis.fusion.data.IData;
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
 import de.tudresden.gis.fusion.data.feature.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
 
-@Algorithm(abstrakt="Determines distance relation between input features", version="1.0")
-public class COBWEB_TopologyRelation extends COBWEB_Algorithm {
+@Algorithm(abstrakt="Test Algorithm", version="1.0")
+public class COBWEB_Test extends COBWEB_Algorithm {
 	
-	private static Logger LOGGER = LoggerFactory.getLogger(COBWEB_TopologyRelation.class);
-	private final String NEW_ATT = "relation_" + System.currentTimeMillis();
-	
+	private static Logger LOGGER = LoggerFactory.getLogger(COBWEB_Test.class);
 	//input identifier
 	private final String IN_SOURCE = "IN_SOURCE";
-	private final String IN_TARGET = "IN_TARGET";
 	
 	//input data
-	private GTFeatureCollection inReference;
-	private GTFeatureCollection inTarget;
-	private GTFeatureCollection outReference;
+	private FeatureCollection inReference;
 	
 	//output identifier
 	private final String OUT_SOURCE = "OUT_SOURCE";
 	
-	//output data
-	private FeatureRelationCollection relations;
-
 	//constructor
-    public COBWEB_TopologyRelation() {
+    public COBWEB_Test() {
         super();
     }
 
-    @ComplexDataInput(identifier=IN_SOURCE, title="reference features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
-    public void setReference(GTFeatureCollection inReference) {
+    @ComplexDataInput(identifier=IN_SOURCE, title="in", binding=GTVectorDataBinding.class, minOccurs=1, maxOccurs=1)
+    public void setData(FeatureCollection inReference) {
         this.inReference = inReference;
     }
     
-    @ComplexDataInput(identifier=IN_TARGET, title="target features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
-    public void setTarget(GTFeatureCollection inTarget) {
-        this.inTarget = inTarget;
-    }
-    
-	@ComplexDataOutput(identifier=OUT_SOURCE, title="reference features with relations to target", binding=GTFeatureCollectionBinding.class)
-    public GTFeatureCollection getReference() {
-        return outReference;
+	@ComplexDataOutput(identifier=OUT_SOURCE, title="out", binding=GTVectorDataBinding.class)
+    public FeatureCollection getData() {
+        return inReference;
     }
     
     @Execute
     public void execute() {
     	
     	LOGGER.info("Number of reference features: " + inReference.size());
-    	LOGGER.info("Number of target features: " + inTarget.size());
-    	
-    	//get relations
-    	Map<String,IData> input = new HashMap<String,IData>();
-    	input.put(IN_SOURCE, inReference);
-    	input.put(IN_TARGET, inTarget);
-		
-		Map<String,IData> output = new de.tudresden.gis.fusion.operation.measurement.TopologyRelation().execute(input);
-		
-		relations = (FeatureRelationCollection) output.get("OUT_RELATIONS");
-		outReference = new GTFeatureCollection(inReference.identifier(), addRelations(inReference.collection(), relations, NEW_ATT));
-		
-    	LOGGER.info("Relation measurement returned " + relations.size() + " results");
+
     }
 
 }

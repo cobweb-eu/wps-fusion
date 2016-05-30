@@ -40,11 +40,11 @@ import java.util.Map;
 import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.generator.AbstractGenerator;
 
-import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.FeatureRelationBinding;
-import de.tudresden.gis.fusion.data.simple.StringLiteral;
-import de.tudresden.gis.fusion.data.simple.URILiteral;
-import de.tudresden.gis.fusion.operation.provision.RDFTurtleGenerator;
+import de.tudresden.gis.fusion.data.literal.StringLiteral;
+import de.tudresden.gis.fusion.data.literal.URILiteral;
+import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
+import de.tudresden.gis.fusion.operation.io.RDFTurtleGenerator;
 
 public class RelationGenerator extends AbstractGenerator {
 		
@@ -58,7 +58,7 @@ public class RelationGenerator extends AbstractGenerator {
 		
 		if(data instanceof FeatureRelationBinding){
 			//get relation
-			IFeatureRelationCollection relations = ((FeatureRelationBinding) data).getPayload();
+			FeatureRelationCollection relations = ((FeatureRelationBinding) data).getPayload();
 			//write relations to file
 			File tempFile = writeToFile(relations);
 			//init temp file
@@ -78,7 +78,7 @@ public class RelationGenerator extends AbstractGenerator {
 	 * @throws FileNotFoundException  
 	 * @throws MalformedURLException 
 	 */
-	private File writeToFile(IFeatureRelationCollection relations) throws FileNotFoundException, MalformedURLException {
+	private File writeToFile(FeatureRelationCollection relations) throws FileNotFoundException, MalformedURLException {
 		
 		Map<String,de.tudresden.gis.fusion.data.IData> input = new HashMap<String,de.tudresden.gis.fusion.data.IData>();
 		RDFTurtleGenerator generator = new RDFTurtleGenerator();
@@ -95,7 +95,7 @@ public class RelationGenerator extends AbstractGenerator {
 		Map<String,de.tudresden.gis.fusion.data.IData> output = generator.execute(input);	
 		URILiteral file = (URILiteral) output.get("OUT_RESOURCE");
 		// must replace 'file:/'
-		return new File(file.getIdentifier().replaceFirst("file:/", ""));
+		return new File(file.getValue().replaceFirst("file:/", ""));
 		
 	}
 	

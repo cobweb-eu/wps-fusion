@@ -58,11 +58,24 @@
 		
 		<dependency>
 			<groupId>de.tudresden.gis</groupId>
-			<artifactId>fusion-base</artifactId>
+			<artifactId>fusion-data</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>de.tudresden.gis</groupId>
-			<artifactId>fusion-impl</artifactId>
+			<artifactId>fusion-data-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.tudresden.gis</groupId>
+			<artifactId>fusion-operation</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>de.tudresden.gis</groupId>
+			<artifactId>fusion-operation-impl</artifactId>
+		</dependency>
+		<dependency>
+		    <groupId>org.reflections</groupId>
+		    <artifactId>reflections</artifactId>
+		    <version>0.9.10</version>
 		</dependency>
 		
 	</dependencies>

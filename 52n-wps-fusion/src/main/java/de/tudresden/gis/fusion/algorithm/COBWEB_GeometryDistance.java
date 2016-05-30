@@ -41,10 +41,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.tudresden.gis.fusion.data.IData;
-import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
-import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
+import de.tudresden.gis.fusion.data.feature.geotools.GTFeatureCollection;
+import de.tudresden.gis.fusion.data.literal.DecimalLiteral;
+import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
 
 @Algorithm(abstrakt="Determines distance relation between input features", version="1.0")
 public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
@@ -53,7 +53,7 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
 	private final String NEW_ATT = "relation_" + System.currentTimeMillis();
 	
 	//input identifier
-	private final String IN_REFERENCE = "IN_REFERENCE";
+	private final String IN_SOURCE = "IN_SOURCE";
 	private final String IN_TARGET = "IN_TARGET";
 	private final String IN_THRESHOLD = "IN_THRESHOLD";
 	
@@ -64,17 +64,17 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
 	private double inBuffer;
 	
 	//output identifier
-	private final String OUT_REFERENCE = "OUT_REFERENCE";
+	private final String OUT_SOURCE = "OUT_SOURCE";
 	
 	//output data
-	private IFeatureRelationCollection relations;
+	private FeatureRelationCollection relations;
 
 	//constructor
     public COBWEB_GeometryDistance() {
         super();
     }
 
-    @ComplexDataInput(identifier=IN_REFERENCE, title="reference features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
+    @ComplexDataInput(identifier=IN_SOURCE, title="reference features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
     public void setReference(GTFeatureCollection inReference) {
         this.inReference = inReference;
     }
@@ -89,7 +89,7 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
     	this.inBuffer = inBuffer;
     }
     
-	@ComplexDataOutput(identifier=OUT_REFERENCE, title="reference features with relations to target", binding=GTFeatureCollectionBinding.class)
+	@ComplexDataOutput(identifier=OUT_SOURCE, title="reference features with relations to target", binding=GTFeatureCollectionBinding.class)
     public GTFeatureCollection getReference() {
         return outReference;
     }
@@ -103,14 +103,14 @@ public class COBWEB_GeometryDistance extends COBWEB_Algorithm {
     	
     	//get relations
     	Map<String,IData> input = new HashMap<String,IData>();
-    	input.put(IN_REFERENCE, inReference);
+    	input.put(IN_SOURCE, inReference);
     	input.put(IN_TARGET, inTarget);
     	input.put(IN_THRESHOLD, new DecimalLiteral(inBuffer));
 		
-		Map<String,IData> output = new de.tudresden.gis.fusion.operation.relation.similarity.GeometryDistance().execute(input);
+		Map<String,IData> output = new de.tudresden.gis.fusion.operation.measurement.GeometryDistance().execute(input);
 		
-		relations = (IFeatureRelationCollection) output.get("OUT_RELATIONS");
-		outReference = new GTFeatureCollection(inReference.getIdentifier(), addRelations(inReference.getSimpleFeatureCollection(), relations, NEW_ATT));
+		relations = (FeatureRelationCollection) output.get("OUT_RELATIONS");
+		outReference = new GTFeatureCollection(inReference.identifier(), addRelations(inReference.collection(), relations, NEW_ATT));
 		
     	LOGGER.info("Relation measurement returned " + relations.size() + " results");
     }

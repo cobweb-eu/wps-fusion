@@ -7,7 +7,7 @@ import org.n52.wps.io.data.binding.complex.GTVectorDataBinding;
 import org.n52.wps.io.datahandler.generator.GML3BasicGenerator;
 
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
-import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
+import de.tudresden.gis.fusion.data.feature.geotools.GTFeatureCollection;
 
 public class GML3Generator extends GML3BasicGenerator {
 	
@@ -20,7 +20,7 @@ public class GML3Generator extends GML3BasicGenerator {
 	@Override
 	public void writeToStream(IData coll, OutputStream os) {
 		GTFeatureCollection collection = ((GTFeatureCollectionBinding) coll).getPayload();
-		GTVectorDataBinding binding52n = new GTVectorDataBinding(collection.getSimpleFeatureCollection());
+		GTVectorDataBinding binding52n = new GTVectorDataBinding(collection.collection());
 		super.writeToStream(binding52n, os);
 	}
 

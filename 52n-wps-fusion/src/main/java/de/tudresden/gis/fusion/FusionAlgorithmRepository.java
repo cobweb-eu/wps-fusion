@@ -28,9 +28,11 @@
  */
 package de.tudresden.gis.fusion;
 
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -39,11 +41,11 @@ import net.opengis.wps.x100.ProcessDescriptionType;
 import org.n52.wps.commons.WPSConfig;
 import org.n52.wps.server.IAlgorithm;
 import org.n52.wps.server.ITransactionalAlgorithmRepository;
+import org.reflections.Reflections;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import de.tudresden.gis.fusion.manage.Operations;
-import de.tudresden.gis.fusion.operation.IMeasurementOperation;
+import de.tudresden.gis.fusion.operation.ARelationMeasurementOperation;
 
 public class FusionAlgorithmRepository implements ITransactionalAlgorithmRepository {
 	
@@ -64,8 +66,8 @@ public class FusionAlgorithmRepository implements ITransactionalAlgorithmReposit
 		if(WPSConfig.getInstance().isRepositoryActive(this.getClass().getCanonicalName())){
 			
 			//load operations from fusion package
-			Set<Class<? extends IMeasurementOperation>> operationClasses = Operations.getRelationMeasurementOperations();
-			for(Class<? extends IMeasurementOperation> operationClass : operationClasses){
+			Set<Class<? extends ARelationMeasurementOperation>> operationClasses = this.getRelationMeasurementOperations();
+			for(Class<? extends ARelationMeasurementOperation> operationClass : operationClasses){
 				try {
 					FusionAlgorithm operation = new FusionAlgorithm(operationClass.newInstance());
 					fusionOperations.put(operation.getWellKnownName(), operation);
@@ -147,6 +149,22 @@ public class FusionAlgorithmRepository implements ITransactionalAlgorithmReposit
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * get available fusion measurement operations
+	 * @return available fusion measurement operations
+	 */
+	private Set<Class<? extends ARelationMeasurementOperation>> getRelationMeasurementOperations() {
+		Reflections reflections = new Reflections("de.tudresden.gis.fusion.operation");
+		Set<Class<? extends ARelationMeasurementOperation>> ops = reflections.getSubTypesOf(ARelationMeasurementOperation.class);
+		Iterator<Class<? extends ARelationMeasurementOperation>> iter = ops.iterator();
+		while(iter.hasNext()){
+			Class<? extends ARelationMeasurementOperation> op = iter.next();
+			if(op.isInterface() || Modifier.isAbstract(op.getModifiers()))
+				iter.remove();
+		}
+		return ops;
 	}
 
 }

@@ -8,10 +8,8 @@ import org.n52.wps.io.data.IData;
 import org.n52.wps.io.datahandler.parser.AbstractParser;
 
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
-import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.geotools.GTIndexedFeatureCollection;
-import de.tudresden.gis.fusion.data.rdf.IIRI;
-import de.tudresden.gis.fusion.data.rdf.IRI;
+import de.tudresden.gis.fusion.data.feature.geotools.GTFeatureCollection;
+import de.tudresden.gis.fusion.data.feature.geotools.GTIndexedFeatureCollection;
 
 public class GMLParser extends AbstractParser {
 
@@ -25,20 +23,20 @@ public class GMLParser extends AbstractParser {
 		
 		Configuration configuration;
 		GTFeatureCollection wfsFC = null;
-		IIRI identifier = new IRI(input.toString());
+		String identifier = input.toString();
 		
 		try {
-			if(schema.contains("3")){			
+			if(schema.contains("3.")){			
 				configuration = new org.geotools.gml3.GMLConfiguration();
 				wfsFC = new GTIndexedFeatureCollection(identifier, input, configuration);
 			}
 		        
-			if(schema.contains("2")){
+			if(schema.contains("2.")){
 				configuration = new org.geotools.gml2.GMLConfiguration();
 				wfsFC = new GTIndexedFeatureCollection(identifier, input, configuration);	
 			}
-		} catch (IOException e) {
-			
+		} catch (Exception e) {
+			e.printStackTrace();
 		} finally {
 			try {
 				input.close();

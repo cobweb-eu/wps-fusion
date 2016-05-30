@@ -28,7 +28,6 @@
  */
 package de.tudresden.gis.fusion;
 
-import java.net.URI;
 import java.util.List;
 
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -42,24 +41,21 @@ import org.n52.wps.io.data.binding.literal.LiteralIntBinding;
 import org.n52.wps.io.data.binding.literal.LiteralLongBinding;
 import org.n52.wps.io.data.binding.literal.LiteralStringBinding;
 
-import de.tudresden.gis.fusion.data.ICoverage;
 import de.tudresden.gis.fusion.data.IData;
-import de.tudresden.gis.fusion.data.IFeatureCollection;
-import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.FeatureRelationBinding;
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
-import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.geotools.GTGridCoverage2D;
-import de.tudresden.gis.fusion.data.rdf.IRI;
-import de.tudresden.gis.fusion.data.restrictions.JavaBindingRestriction;
-import de.tudresden.gis.fusion.data.simple.BooleanLiteral;
-import de.tudresden.gis.fusion.data.simple.DecimalLiteral;
-import de.tudresden.gis.fusion.data.simple.IntegerLiteral;
-import de.tudresden.gis.fusion.data.simple.LongLiteral;
-import de.tudresden.gis.fusion.data.simple.StringLiteral;
-import de.tudresden.gis.fusion.data.simple.URILiteral;
-import de.tudresden.gis.fusion.metadata.data.IIODescription;
-import de.tudresden.gis.fusion.operation.io.IIORestriction;
+import de.tudresden.gis.fusion.data.feature.geotools.GTFeatureCollection;
+import de.tudresden.gis.fusion.data.feature.geotools.GTGridCoverage;
+import de.tudresden.gis.fusion.data.literal.BooleanLiteral;
+import de.tudresden.gis.fusion.data.literal.DecimalLiteral;
+import de.tudresden.gis.fusion.data.literal.IntegerLiteral;
+import de.tudresden.gis.fusion.data.literal.LongLiteral;
+import de.tudresden.gis.fusion.data.literal.StringLiteral;
+import de.tudresden.gis.fusion.data.literal.URILiteral;
+import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
+import de.tudresden.gis.fusion.operation.constraint.BindingConstraint;
+import de.tudresden.gis.fusion.operation.constraint.IDataConstraint;
+import de.tudresden.gis.fusion.operation.description.IIODataDescription;
 
 public class DataTransformer {
 	
@@ -81,11 +77,11 @@ public class DataTransformer {
 		if(data instanceof LiteralStringBinding)
 			return new StringLiteral(((LiteralStringBinding) data).getPayload());
 		if(data instanceof GTVectorDataBinding)
-			return new GTFeatureCollection(new IRI(data.toString()), (SimpleFeatureCollection)((GTVectorDataBinding) data).getPayload());
+			return new GTFeatureCollection(data.toString(), (SimpleFeatureCollection)((GTVectorDataBinding) data).getPayload());
 		if(data instanceof GTFeatureCollectionBinding)
 			return (GTFeatureCollection) ((GTFeatureCollectionBinding) data).getPayload();
 		if(data instanceof GTRasterDataBinding)
-			return new GTGridCoverage2D(new IRI(data.toString()), (GridCoverage2D)((GTRasterDataBinding) data).getPayload());
+			return new GTGridCoverage(data.toString(), (GridCoverage2D)((GTRasterDataBinding) data).getPayload());
 		if(data instanceof FeatureRelationBinding)
 			return ((FeatureRelationBinding) data).getPayload();
 		if(data instanceof LiteralAnyURIBinding)
@@ -111,23 +107,23 @@ public class DataTransformer {
 	public static org.n52.wps.io.data.IData transformIData(IData data){
 		
 		if(data instanceof IntegerLiteral)
-			return new LiteralIntBinding(((IntegerLiteral) data).getValue());
+			return new LiteralIntBinding(((IntegerLiteral) data).resolve());
 		if(data instanceof LongLiteral)
-			return new LiteralLongBinding(((LongLiteral) data).getValue());
+			return new LiteralLongBinding(((LongLiteral) data).resolve());
 		if(data instanceof DecimalLiteral)
-			return new LiteralDoubleBinding(((DecimalLiteral) data).getValue());
+			return new LiteralDoubleBinding(((DecimalLiteral) data).resolve());
 		if(data instanceof BooleanLiteral)
-			return new LiteralBooleanBinding(((BooleanLiteral) data).getValue());
+			return new LiteralBooleanBinding(((BooleanLiteral) data).resolve());
 		if(data instanceof StringLiteral)
-			return new LiteralStringBinding(((StringLiteral) data).getValue());
+			return new LiteralStringBinding(((StringLiteral) data).resolve());
 		if(data instanceof GTFeatureCollection)
 			return new GTFeatureCollectionBinding((GTFeatureCollection) data);
-		if(data instanceof GTGridCoverage2D)
-			return new GTRasterDataBinding(((GTGridCoverage2D) data).getCoverage());
-		if(data instanceof IFeatureRelationCollection)
-			return new FeatureRelationBinding((IFeatureRelationCollection) data);
+		if(data instanceof GTGridCoverage)
+			return new GTRasterDataBinding(((GTGridCoverage) data).resolve());
+		if(data instanceof FeatureRelationCollection)
+			return new FeatureRelationBinding((FeatureRelationCollection) data);
 		if(data instanceof URILiteral)
-			return new LiteralAnyURIBinding(URI.create(((URILiteral) data).getIdentifier()));
+			return new LiteralAnyURIBinding(((URILiteral) data).resolve());
 		
 		return null;
 	}
@@ -137,11 +133,11 @@ public class DataTransformer {
 	 * @param description fusion io description
 	 * @return supported framework binding
 	 */
-	public static Class<?> getSupportedClass(IIODescription description){
+	public static Class<?> getSupportedClass(IIODataDescription description){
 		
-		for(IIORestriction restriction : description.getDataRestrictions()){
-			if(restriction instanceof JavaBindingRestriction)
-				return getSupportedClass((JavaBindingRestriction) restriction);
+		for(IDataConstraint constraint : description.constraints()){
+			if(constraint instanceof BindingConstraint)
+				return getSupportedClass((BindingConstraint) constraint);
 		}
 		
 		return null;
@@ -152,25 +148,25 @@ public class DataTransformer {
 	 * @param restriction io restriction
 	 * @return supported binding
 	 */
-	private static Class<?> getSupportedClass(JavaBindingRestriction restriction){
+	private static Class<?> getSupportedClass(BindingConstraint constraint){
 		
-		if(restriction.compliantWith(IntegerLiteral.class))
+		if(constraint.compliantWith(IntegerLiteral.class))
 			return LiteralIntBinding.class;
-		if(restriction.compliantWith(LongLiteral.class))
+		if(constraint.compliantWith(LongLiteral.class))
 			return LiteralLongBinding.class;
-		if(restriction.compliantWith(DecimalLiteral.class))
+		if(constraint.compliantWith(DecimalLiteral.class))
 			return LiteralDoubleBinding.class;
-		if(restriction.compliantWith(BooleanLiteral.class))
+		if(constraint.compliantWith(BooleanLiteral.class))
 			return LiteralBooleanBinding.class;
-		if(restriction.compliantWith(StringLiteral.class))
+		if(constraint.compliantWith(StringLiteral.class))
 			return LiteralStringBinding.class;
-		if(restriction.compliantWith(IFeatureCollection.class))
+		if(constraint.compliantWith(GTFeatureCollection.class))
 			return GTFeatureCollectionBinding.class;
-		if(restriction.compliantWith(ICoverage.class))
+		if(constraint.compliantWith(GTGridCoverage.class))
 			return GTRasterDataBinding.class;
-		if(restriction.compliantWith(IFeatureRelationCollection.class))
+		if(constraint.compliantWith(FeatureRelationCollection.class))
 			return FeatureRelationBinding.class;
-		if(restriction.compliantWith(URILiteral.class))
+		if(constraint.compliantWith(URILiteral.class))
 			return LiteralAnyURIBinding.class;
 		
 		return null;

@@ -24,14 +24,26 @@
 
 	<artifact>
         <groupId>de.tudresden.gis</groupId>
-        <artifactId>fusion-base</artifactId>
-        <version>0.0.4-SNAPSHOT</version>
+        <artifactId>fusion-data</artifactId>
+        <version>0.1-SNAPSHOT</version>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>
     <artifact>
         <groupId>de.tudresden.gis</groupId>
-        <artifactId>fusion-impl</artifactId>
-        <version>0.0.4-SNAPSHOT</version>
+        <artifactId>fusion-data-impl</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <license>The Apache Software License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>de.tudresden.gis</groupId>
+        <artifactId>fusion-operation</artifactId>
+        <version>0.1-SNAPSHOT</version>
+        <license>The Apache Software License, Version 2.0</license>
+    </artifact>
+    <artifact>
+        <groupId>de.tudresden.gis</groupId>
+        <artifactId>fusion-operation-impl</artifactId>
+        <version>0.1-SNAPSHOT</version>
         <license>The Apache Software License, Version 2.0</license>
     </artifact>
     <artifact>

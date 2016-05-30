@@ -7,17 +7,19 @@ import java.util.List;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.geotools.data.simple.SimpleFeatureIterator;
+import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.geotools.feature.simple.SimpleFeatureTypeBuilder;
 import org.n52.wps.server.AbstractAnnotatedAlgorithm;
+import org.opengis.feature.Feature;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.opengis.feature.type.FeatureType;
 
-import de.tudresden.gis.fusion.data.IFeatureRelation;
-import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
-import de.tudresden.gis.fusion.data.IRelationMeasurement;
-import de.tudresden.gis.fusion.data.complex.FeatureRelation;
-import de.tudresden.gis.fusion.metadata.data.RelationMeasurementDescription;
+import de.tudresden.gis.fusion.data.description.IMeasurementDescription;
+import de.tudresden.gis.fusion.data.feature.relation.IFeatureRelation;
+import de.tudresden.gis.fusion.data.feature.relation.IRelationMeasurement;
+import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
 
 public abstract class COBWEB_Algorithm extends AbstractAnnotatedAlgorithm {
 	
@@ -29,7 +31,7 @@ public abstract class COBWEB_Algorithm extends AbstractAnnotatedAlgorithm {
      * @param relations relations
      * @return target features with relations
      */
-    protected SimpleFeatureCollection addRelations(SimpleFeatureCollection inReference, IFeatureRelationCollection relations, String newAtt){
+    protected SimpleFeatureCollection addRelations(SimpleFeatureCollection inReference, FeatureRelationCollection relations, String newAtt){
     	//init feature list
     	List<SimpleFeature> outTargetList = new ArrayList<SimpleFeature>();
     	//get new feature type
@@ -50,18 +52,28 @@ public abstract class COBWEB_Algorithm extends AbstractAnnotatedAlgorithm {
     }
     
     /**
+     * add feature relation to collection of features
+     * @param inTarget target features
+     * @param relations relations
+     * @return target features with relations
+     */
+    protected SimpleFeatureCollection addRelations(FeatureCollection<? extends FeatureType, ? extends Feature> inReference, FeatureRelationCollection relations, String newAtt){
+    	return addRelations((SimpleFeatureCollection) inReference, relations, newAtt);
+    }
+    
+    /**
      * get relation attribute string
      * @param feature input feature
      * @param relations input relations
      * @return relation string for feature
      */
-    private String getRelationString(SimpleFeature feature, IFeatureRelationCollection relations){
+    private String getRelationString(SimpleFeature feature, FeatureRelationCollection relations){
     	//get feature id
     	String sID = feature.getID();
     	//get relations for reference id
     	List<IFeatureRelation> featureRelations = new ArrayList<IFeatureRelation>();
     	for(IFeatureRelation relation : relations){
-    		if(relation.getReference().getFeatureId().endsWith(sID))
+    		if(relation.getSource().identifier().endsWith(sID))
     			featureRelations.add(relation);
     	}
     	//identify suitable relation (if array > 1)
@@ -70,7 +82,7 @@ public abstract class COBWEB_Algorithm extends AbstractAnnotatedAlgorithm {
     	else {
     		StringBuilder sRelation = new StringBuilder();
     		for(IFeatureRelation relation : featureRelations){
-    			sRelation.append(getRelationString((FeatureRelation) relation) + "&&");
+    			sRelation.append(getRelationString((IFeatureRelation) relation) + "&&");
     		}
     		return sRelation.substring(0, sRelation.length()-2);
     	}
@@ -103,11 +115,11 @@ public abstract class COBWEB_Algorithm extends AbstractAnnotatedAlgorithm {
     	if(relation == null)
     		return TARGET_NO_RELATION;
     	StringBuilder builder = new StringBuilder();
-    	Collection<IRelationMeasurement> measurements = relation.getMeasurements();
-    	builder.append(relativizeId(relation.getTarget().getFeatureId()) + ":");
+    	Collection<IRelationMeasurement> measurements = relation.getRelationMeasurements();
+    	builder.append(relativizeId(relation.getTarget().identifier()) + ":");
     	for(IRelationMeasurement measurement : measurements){
-	    	String measurementId = relativizeId(((RelationMeasurementDescription) measurement.getDescription()).getIdentifier().toString());
-	    	String measurementValue = measurement.getMeasurementValue().getValue().toString();
+	    	String measurementId = relativizeId(((IMeasurementDescription) measurement.getDescription()).identifier().toString());
+	    	String measurementValue = measurement.resolve().toString();
 	    	builder.append(measurementId + "," + measurementValue + ";");
     	}
     	return builder.substring(0, builder.length() - 1);

@@ -41,9 +41,11 @@ import org.n52.wps.io.data.IData;
 import org.n52.wps.server.AbstractSelfDescribingAlgorithm;
 import org.n52.wps.server.ExceptionReport;
 
-import de.tudresden.gis.fusion.data.restrictions.ERestrictions;
-import de.tudresden.gis.fusion.metadata.data.IIODescription;
 import de.tudresden.gis.fusion.operation.IOperation;
+import de.tudresden.gis.fusion.operation.constraint.IDataConstraint;
+import de.tudresden.gis.fusion.operation.constraint.MandatoryConstraint;
+import de.tudresden.gis.fusion.operation.description.IInputDescription;
+import de.tudresden.gis.fusion.operation.description.IOutputDescription;
 
 public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	
@@ -71,9 +73,9 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 
 	@Override
 	public Class<?> getInputDataType(String id) {
-		Collection<IIODescription> descriptions = fusionOperation.getProfile().getInputDescriptions();
-		for(IIODescription description : descriptions){
-			if(description.getIdentifier().equals(id))
+		Collection<IInputDescription> descriptions = fusionOperation.profile().inputDescriptions();
+		for(IInputDescription description : descriptions){
+			if(description.identifier().equals(id))
 				return DataTransformer.getSupportedClass(description);
 		}
 		return null;
@@ -81,9 +83,9 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 
 	@Override
 	public Class<?> getOutputDataType(String id) {
-		Collection<IIODescription> descriptions = fusionOperation.getProfile().getOutputDescriptions();
-		for(IIODescription description : descriptions){
-			if(description.getIdentifier().equals(id))
+		Collection<IOutputDescription> descriptions = fusionOperation.profile().outputDescriptions();
+		for(IOutputDescription description : descriptions){
+			if(description.identifier().equals(id))
 				return DataTransformer.getSupportedClass(description);
 		}
 		return null;
@@ -91,27 +93,27 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 
 	@Override
 	public List<String> getInputIdentifiers() {
-		Collection<IIODescription> descriptions = fusionOperation.getProfile().getInputDescriptions();
+		Collection<IInputDescription> descriptions = fusionOperation.profile().inputDescriptions();
 		List<String> identifiers = new ArrayList<String>();
-		for(IIODescription description : descriptions){
-			identifiers.add(description.getIdentifier());
+		for(IInputDescription description : descriptions){
+			identifiers.add(description.identifier());
 		}
 		return identifiers;
 	}
 
 	@Override
 	public List<String> getOutputIdentifiers() {
-		Collection<IIODescription> descriptions = fusionOperation.getProfile().getOutputDescriptions();
+		Collection<IOutputDescription> descriptions = fusionOperation.profile().outputDescriptions();
 		List<String> identifiers = new ArrayList<String>();
-		for(IIODescription description : descriptions){
-			identifiers.add(description.getIdentifier());
+		for(IOutputDescription description : descriptions){
+			identifiers.add(description.identifier());
 		}
 		return identifiers;
 	}
 	
 	@Override
 	public String getWellKnownName() {
-		return "de.tudresden.gis.fusion.algorithm." + this.fusionOperation.getProfile().getProcessName();
+		return "de.tudresden.gis.fusion.algorithm." + this.fusionOperation.profile().processDescription().identifier();
 	}
 	
 	@Override
@@ -122,19 +124,27 @@ public class FusionAlgorithm extends AbstractSelfDescribingAlgorithm {
 	}
 	
 	public String getAbstract() {
-		return this.fusionOperation.getProfile().getProcessDescription();
+		return this.fusionOperation.profile().processDescription().getDescription();
 	}
 	
 	@Override
 	public BigInteger getMinOccurs(String id){
-		Collection<IIODescription> ioDesc = fusionOperation.getProfile().getInputDescriptions();
-		for(IIODescription io : ioDesc){
-			if(io.getIdentifier().equalsIgnoreCase(id) && io.getDataRestrictions().contains(ERestrictions.MANDATORY.getRestriction()))
+		Collection<IInputDescription> ioDesc = fusionOperation.profile().inputDescriptions();
+		for(IInputDescription io : ioDesc){
+			if(io.identifier().equalsIgnoreCase(id) && isMandatory(io.constraints()))
 				return new BigInteger("1");
 		}
 		return new BigInteger("0");
 	}
 	
+	private boolean isMandatory(Collection<IDataConstraint> constraints) {
+		for(IDataConstraint constraint : constraints){
+			if(constraint instanceof MandatoryConstraint)
+				return true;
+		}
+		return false;
+	}
+
 	@Override
 	public BigInteger getMaxOccurs(String identifier){
 		return new BigInteger("1");

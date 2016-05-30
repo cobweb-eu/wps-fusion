@@ -43,12 +43,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import de.tudresden.gis.fusion.data.IData;
-import de.tudresden.gis.fusion.data.IFeatureRelationCollection;
 import de.tudresden.gis.fusion.data.binding.GTFeatureCollectionBinding;
-import de.tudresden.gis.fusion.data.geotools.GTFeatureCollection;
-import de.tudresden.gis.fusion.data.geotools.GTGridCoverage2D;
-import de.tudresden.gis.fusion.data.rdf.IRI;
-import de.tudresden.gis.fusion.data.simple.IntegerLiteral;
+import de.tudresden.gis.fusion.data.feature.geotools.GTFeatureCollection;
+import de.tudresden.gis.fusion.data.feature.geotools.GTGridCoverage;
+import de.tudresden.gis.fusion.data.literal.IntegerLiteral;
+import de.tudresden.gis.fusion.data.relation.FeatureRelationCollection;
 
 @Algorithm(abstrakt="Determines distance relation between input features", version="1.0")
 public class COBWEB_ZonalStats extends COBWEB_Algorithm {
@@ -57,7 +56,7 @@ public class COBWEB_ZonalStats extends COBWEB_Algorithm {
 	private final String NEW_ATT = "relation_" + System.currentTimeMillis();
 	
 	//input identifier
-	private final String IN_REFERENCE = "IN_REFERENCE";
+	private final String IN_SOURCE = "IN_SOURCE";
 	private final String IN_TARGET = "IN_TARGET";
 	private final String IN_BAND = "IN_BAND";
 	
@@ -68,17 +67,17 @@ public class COBWEB_ZonalStats extends COBWEB_Algorithm {
 	private int inBand;
 	
 	//output identifier
-	private final String OUT_REFERENCE = "OUT_REFERENCE";
+	private final String OUT_SOURCE = "OUT_SOURCE";
 	
 	//output data
-	private IFeatureRelationCollection relations;
+	private FeatureRelationCollection relations;
 
 	//constructor
     public COBWEB_ZonalStats() {
         super();
     }
 
-    @ComplexDataInput(identifier=IN_REFERENCE, title="reference features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
+    @ComplexDataInput(identifier=IN_SOURCE, title="reference features", binding=GTFeatureCollectionBinding.class, minOccurs=1, maxOccurs=1)
     public void setReference(GTFeatureCollection inReference) {
         this.inReference = inReference;
     }
@@ -93,7 +92,7 @@ public class COBWEB_ZonalStats extends COBWEB_Algorithm {
     	this.inBand = inBand;
     }
     
-	@ComplexDataOutput(identifier=OUT_REFERENCE, title="reference features with target coverage relations", binding=GTFeatureCollectionBinding.class)
+	@ComplexDataOutput(identifier=OUT_SOURCE, title="reference features with target coverage relations", binding=GTFeatureCollectionBinding.class)
     public GTFeatureCollection getTarget() {
         return outReference;
     }
@@ -106,14 +105,14 @@ public class COBWEB_ZonalStats extends COBWEB_Algorithm {
     	
     	//get relations
     	Map<String,IData> input = new HashMap<String,IData>();
-    	input.put(IN_REFERENCE, inReference);
-    	input.put(IN_TARGET, new GTGridCoverage2D(new IRI("targetCoverage"), inTarget));
+    	input.put(IN_SOURCE, inReference);
+    	input.put(IN_TARGET, new GTGridCoverage("targetCoverage", inTarget));
     	input.put(IN_BAND, new IntegerLiteral(inBand));
 		
-		Map<String,IData> output = new de.tudresden.gis.fusion.operation.relation.ZonalStatistics().execute(input);
+		Map<String,IData> output = new de.tudresden.gis.fusion.operation.measurement.ZonalStatistics().execute(input);
 		
-		relations = (IFeatureRelationCollection) output.get("OUT_RELATIONS");
-		outReference = new GTFeatureCollection(inReference.getIdentifier(), addRelations(inReference.getSimpleFeatureCollection(), relations, NEW_ATT));
+		relations = (FeatureRelationCollection) output.get("OUT_RELATIONS");
+		outReference = new GTFeatureCollection(inReference.identifier(), addRelations(inReference.collection(), relations, NEW_ATT));
 		
     	LOGGER.info("Relation measurement returned " + relations.size() + " results");
     }

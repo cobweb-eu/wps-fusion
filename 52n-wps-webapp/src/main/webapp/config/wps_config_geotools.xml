@@ -7,7 +7,7 @@
 			<Parser name="RelationParser" className="de.tudresden.gis.fusion.data.parser.RelationParser" active="true">
 				<Format mimetype="text/turtle" encoding="UTF-8" />
 			</Parser>
-			<Parser name="GMLParser" className="de.tudresden.gis.fusion.data.parser.GMLParser" active="true">
+			<!-- <Parser name="GMLParser" className="de.tudresden.gis.fusion.data.parser.GMLParser" active="true">
 				<Format mimetype="text/xml"
 					schema="http://schemas.opengis.net/gml/3.2.1/base/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/3.2.1"
@@ -28,9 +28,9 @@
 					schema="http://schemas.opengis.net/gml/3.1.0/base/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/3.1.1"
 					schema="http://schemas.opengis.net/gml/3.1.1/base/feature.xsd" />
-			</Parser>
+			</Parser> -->
 			
-			<!-- <Parser name="GML3BasicParser"
+			<Parser name="GML3BasicParser"
 				className="org.n52.wps.io.datahandler.parser.GML3BasicParser"
 				active="true">
 				<Format mimetype="text/xml"
@@ -106,7 +106,7 @@
 					schema="http://schemas.opengis.net/gml/2.1.2/feature.xsd" />
 				<Format mimetype="text/xml; subtype=gml/2.1.2.1"
 					schema="http://schemas.opengis.net/gml/2.1.2.1/feature.xsd" />
-			</Parser> -->
+			</Parser>
 			<!-- <Parser name="GenericFileParser"
 				className="org.n52.wps.io.datahandler.parser.GenericFileParser"
 				active="true">
@@ -492,6 +492,7 @@
 	
 		<Repository name="LocalAlgorithmRepository"
 			className="org.n52.wps.server.LocalAlgorithmRepository" active="true">
+			<!-- <Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.BPMNAggregate</Property> -->
 			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_GeometryDistance</Property>
 			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_DamerauLevenshteinDistance</Property>
 			<Property name="Algorithm" active="true">de.tudresden.gis.fusion.algorithm.COBWEB_TopologyRelation</Property>
