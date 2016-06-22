@@ -15,7 +15,9 @@ The following module is added to the WPS framework:
 
 ## Installation
 
-The project is built using ``Maven install``. The spatial data for unit tests is not uploaded. To prevent build failures, those tests need to be disabled. The dependencies for the group ``de.tudresden.gis`` can be obtained from https://github.com/GeoinformationSystems/SpatialDataFusion.
+The project is built using ``Maven install``. The spatial data for unit tests is not uploaded. To prevent build failures, those tests need to be ignored. 
+
+The dependencies for the group ``de.tudresden.gis`` can be obtained from https://github.com/GeoinformationSystems/SpatialDataFusion.
 
 For running the service, the compiled project (WAR-file) must be deployed using a servlet container (e.g. Tomcat). The service functionality can be accessed using the OGC WPS standard (http://www.opengeospatial.org/standards/wps).
 
